@@ -1,0 +1,21 @@
+# Local secrets and environment-specific values
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local development and build output
+.DS_Store
+node_modules/
+.next/
+.vercel/
+coverage/
+playwright-report/
+test-results/
+dist/
+build/
+
+# Local Supabase runtime data
+supabase/.branches/
+supabase/.temp/

@@ -1,0 +1,61 @@
+# Video diagnostics: network access and precision
+
+Checked 5 October 2026 against primary documentation. This is a documentation review, not an approved integration or an API/account test. TikTok's dynamic Accounts endpoint was inspected in a rendered browser after text-only browsing returned an empty page.
+
+## Decision for Cadence
+
+Build diagnostics around evidence capabilities, not a universal retention promise. TikTok's approved Accounts API and future YouTube Analytics can supply timed retention data. X supplies coarse playback quartiles. LinkedIn's inspected organic APIs provide aggregate watch statistics, not a video-timeline curve. Metric availability, application approval, account consent and permission to use data with AI are separate conditions.
+
+| Network / route | Retention precision supported by inspected documentation | Skip/swipe metric | Timed transcript route | Cadence consequence |
+| --- | --- | --- | --- | --- |
+| TikTok Display API | Counts and duration; no retention field in its Video Object | Not listed | No timed speech field; description is post copy | Basic results explanations only |
+| TikTok Accounts API, approved application | `video_view_retention`: second + percentage | No separate skip/swipe field in inspected schema | `caption` is post description; no timed speech field listed | Timed diagnostics possible when authorized data is returned |
+| LinkedIn organization video analytics | Lifetime/day/week watch statistics; no video-position bins listed | Not listed | Videos API can return a successfully uploaded caption file | Aggregate explanations; no precise departure claims |
+| LinkedIn member video statistics | Aggregate watch time/viewers; plays can be daily | Not listed | User-owned caption/source asset where available | Preserve member/organization metric differences |
+| X API media metrics | Playback counts at 0%, 25%, 50%, 75%, 100% | No dedicated skip/swipe field in inspected metrics | No timed transcript field in inspected metrics | Show broad intervals; do not invent an exact second |
+| YouTube Analytics, later phase | 100 normalized retention intervals | Do not substitute retention loss for a native skip metric | Owner/editor-authorized Captions API where a usable track exists | Timed analysis limited by interval width and caption alignment |
+
+These are statements about the inspected routes, not proof that a network has no other partner or future API.
+
+## TikTok
+
+- The ordinary Display API Video Object lists duration, views, likes, comments and shares; its description field is author-written post copy. It does not list watch time, retention or speech transcription. [Video Object](https://developers.tiktok.com/docs/en/tiktok-api-v2-video-object).
+- A separate Accounts API supports owned Business and Personal accounts. New developer apps or scope increases including TikTok Accounts require an access application from 20 March 2026. Authorized uses include owned-account insights; the overview prohibits downloading TikTok media and migrating it elsewhere. Retain the original user-supplied asset rather than designing a TikTok downloader. [Accounts overview](https://business-api.tiktok.com/portal/docs/accounts-api-overview/v1.3).
+- `GET /open_api/v1.3/business/video/list/` documents `video_view_retention` objects with `second` and `percentage`, scope `video.insights`, typically T+24–48 hours. Other documented fields include total/average watch seconds and `full_video_watched_rate`. Access needs a creator-authorized token and granted scopes; a native metric missing in TikTok Analytics cannot be fetched. `video_views` combines paid and organic activity; post data stops updating after 365 days. `caption` means post description, not transcript. No standalone skip field is listed. [Post data endpoint](https://business-api.tiktok.com/portal/docs/get-post-data-of-a-tiktok-account/v1.3).
+- The separate Ads Manager Video Insights product documents second-by-second creative/key-frame reporting. That advertising product is not evidence that Cadence's organic integration has identical access. [Ads Manager video insights](https://ads.tiktok.com/resources/help/article/video-insights?lang=en).
+- TikTok Research Tools explicitly exclude creators, advertisers and commercial users. They are not a route around Accounts approval. [Research FAQ](https://developers.tiktok.com/docs/en/research-api-faq).
+
+## LinkedIn
+
+- Organization `videoAnalytics` requires organization social-read permission and authorized Page roles. It returns `VIDEO_VIEW`, `VIEWER`, `TIME_WATCHED` and `TIME_WATCHED_FOR_VIDEO_VIEWS`, with day/week/all aggregation. Views require a qualifying three-second play; loops increase watch time but not views. Several metrics have a six-month availability window. No video-position bins, completion or skip field are documented here. [Organization Video Analytics](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/shares/video-analytics-api?view=li-lms-2026-04).
+- Member `memberCreatorVideoAnalytics` requires `r_member_postAnalytics`. `VIDEO_PLAY` requires two seconds; `VIDEO_VIEWER` is unique engaged viewers; `VIDEO_WATCH_TIME` is milliseconds including loops. Plays/viewers expire after one year of post creation. Watch time/viewers do not support daily aggregation or time-bound queries. These are not interchangeable with organization definitions. No timeline bins are documented. [Member Video Statistics](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/members/video-statistics?view=li-lms-2026-08).
+- The native member dashboard exposes views, total/average watch time and engagement; that help page does not establish timeline-curve API access. [Native video analytics](https://www.linkedin.com/help/linkedin/answer/a597277).
+- The Videos API's `captions` URL exists when a requested caption upload processed successfully. It does not promise automatic transcripts for every existing post. Keep Cadence-uploaded SRT/VTT originals; validate available files and alignment. [Videos API](https://learn.microsoft.com/en-us/linkedin/marketing/integrations/community-management/shares/videos-api).
+- Community Management access is reviewed. Development access has test-oriented restrictions; production Standard access requires a separate application, and approval is discretionary. Personal posting permission alone is not analytics permission. [Increasing access](https://learn.microsoft.com/en-us/linkedin/marketing/increasing-access?view=li-lms-2026-09).
+
+## X
+
+- Media `non_public_metrics` exposes `playback_0_count`, `playback_25_count`, `playback_50_count`, `playback_75_count` and `playback_100_count`. Private metrics require owner user-context authorization; non-public/organic/promoted metrics have a 30-day post window. Quartiles are playback milestone counts, not second-by-second events; do not assume they count unique people unless the selected source definition establishes that denominator. Public video views are aggregated across posts containing that video. No watch-time, fine-grained retention, skip-rate or transcript field is listed in this metrics reference. [Metrics](https://docs.x.com/x-api/fundamentals/metrics).
+- API v2 reads are paid by usage; exact endpoint prices belong to the developer console. Under Cadence's current no-paid-social-API budget, use explicit unavailable/manual-import states instead of promising automatic X insights. [Usage and billing](https://docs.x.com/x-api/fundamentals/post-cap).
+- Do not identify “the line that lost viewers” from a 25%-wide interval. A 60-second video only locates the first decline somewhere in 0–15 seconds. This is a Cadence precision requirement inferred from the documented milestone spacing.
+
+## YouTube, after launch
+
+- Channel-owner reports require OAuth authorization; `yt-analytics.readonly` covers audience activity. Retention reports filter to one video and use `elapsedVideoTimeRatio` with `audienceWatchRatio`, `relativeRetentionPerformance`, `startedWatching`, `stoppedWatching` and `totalSegmentImpressions`. This is owner-authorized analytics, not a public competitor-retention feed. [Channel reports](https://developers.google.com/youtube/analytics/channel_reports).
+- The timeline is 100 equally spaced intervals; values 0.01–1.0 denote exclusive interval ends. Two minutes yields 1.2-second intervals; two hours yields 72 seconds. An optional `audienceType` filter distinguishes organic and advertising traffic. [Dimensions](https://developers.google.com/youtube/analytics/dimensions).
+- `audienceWatchRatio` is segment viewing relative to total views; replayed segments can exceed 1. `relativeRetentionPerformance` ranges 0–1 against similar-length YouTube videos, with 0.5 the median. Segment start/stop counts may include resuming and repeat viewing. These measures are not a causal record of why someone left. [Metrics](https://developers.google.com/youtube/analytics/metrics).
+- `captions.list` returns track metadata, not caption text; download is separate. [Caption listing](https://developers.google.com/youtube/v3/docs/captions/list). Download requires edit permission and an authorized scope such as `youtube.force-ssl`, costs 200 quota units, and supports SRT/VTT. Analytics-only authorization is insufficient. Missing tracks, permission failure and conversion failure need fallbacks. No blanket promise of downloadable automatic captions for every video. [Caption download](https://developers.google.com/youtube/v3/docs/captions/download).
+
+## AI permissions and interpretation rules
+
+- LinkedIn generally prohibits API-derived Page/member data as AI input except specified exceptions. Its exceptions concern defined content and approved use cases; consent is not blanket permission for every metric. Deterministic metric explanations and generative analytics must be assessed separately. Client data independently provided outside those APIs is expressly outside this AI policy, while provenance and other applicable requirements still matter. [Developer AI Policy](https://learn.microsoft.com/en-us/linkedin/marketing/developer-ai-policy?view=li-lms-2026-08).
+- X permits analyses explicitly approved under the developer agreement and prohibits using X API/content to train or fine-tune foundation/frontier models. Sending API data to an inference provider is not automatically justified by an OAuth grant. Register the analytics use case and verify current redistribution/AI handling conditions before enabling it. [Developer Agreement](https://docs.x.com/developer-terms/agreement), [Developer Policy](https://docs.x.com/developer-terms/policy).
+- A downward curve coinciding with a spoken line is an association. Use “this section may be losing attention,” with plausible alternatives such as a slow visual, confusing transition, audience mismatch or the viewer already receiving the answer. Never claim to know the viewer's motive.
+- Missing skip data remains unavailable. Do not label `1 - retention(t)` as the platform's skip rate: its population, time threshold and denominator may differ.
+- Preserve metric name/version, denominator, units, period, organic/paid coverage, bin width, collection time, source permissions and sample size when known. Do not silently use zero for missing data.
+- To inspect a line, need a permitted timed transcript tied to the exact published video revision. Untimed pasted text, edited source footage or stale captions cannot support reliable line alignment. Prefer creator-uploaded SRT/VTT or a consented transcript of their original asset; speech recognition is a separate future AI capability/cost, not a free network API guarantee.
+- Show observed values separately from proposed edits. Suggested hooks, trim points and earlier calls to action are experiments for the creator to approve, not claims of proven causality.
+
+## Verification limits
+
+No developer applications, account connections, paid credits, live metrics requests, caption downloads, transcript generation or device tests were performed. API documentation establishes a possible route; deployment still needs approvals, capability checks, sample-data validation and data-use review. Facebook and Instagram are covered by a separate research task.

@@ -1,0 +1,403 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "five-account-prices",
+      "title": "Pricing for five social accounts and one or five users",
+      "queries": [
+        {
+          "id": "buffer-price",
+          "source": {
+            "label": "Buffer pricing",
+            "links": [
+              {
+                "label": "Official plan prices",
+                "href": "https://support.buffer.com/articles/buffer-pricing-and-features-6pJrOPuzIt"
+              }
+            ],
+            "filters": [
+              "Social accounts: five",
+              "Total users: one or five",
+              "Tax: excluded"
+            ],
+            "caveats": [
+              "Annual equivalents require an annual commitment; they are not month-to-month prices."
+            ],
+            "evidenceFlow": [
+              {
+                "kind": "calculation",
+                "title": "Five-account bills",
+                "detail": "Essentials: 5 × $6 = $30 monthly; Team: 5 × $12 = $60 monthly. Annual invoices are $300 and $600."
+              }
+            ]
+          }
+        },
+        {
+          "id": "publer-price",
+          "source": {
+            "label": "Publer live calculator",
+            "links": [
+              {
+                "label": "Official calculator",
+                "href": "https://publer.com/plans"
+              }
+            ],
+            "filters": [
+              "Social accounts: five",
+              "Additional members: zero or four",
+              "Plan: Business",
+              "Tax: excluded"
+            ],
+            "caveats": [
+              "The owner is included; five total users means four additional members.",
+              "Publer's displayed GBP quotes can move and are not a currency conversion for other vendors."
+            ],
+            "evidenceFlow": [
+              {
+                "kind": "validation",
+                "title": "Calculator settings",
+                "detail": "The public calculator was set to five accounts, with zero or four extra members, and both billing choices were inspected. Business displayed $35/$47 monthly and $28/$37.60 annual effective."
+              }
+            ]
+          }
+        },
+        {
+          "id": "metricool-price",
+          "source": {
+            "label": "Metricool plans and X surcharge",
+            "links": [
+              {
+                "label": "Official plans",
+                "href": "https://metricool.com/pricing/"
+              },
+              {
+                "label": "Current X access rules",
+                "href": "https://help.metricool.com/x-twitter-access-in-metricool-2bt66"
+              }
+            ],
+            "filters": [
+              "Profiles: one on each of five networks",
+              "Connected X accounts: one",
+              "Plan: Starter solo or Advanced team"
+            ],
+            "caveats": [
+              "A brand allows one profile per network; Advanced includes unlimited collaborators.",
+              "Full Advanced Analytics/Studio is an extra add-on."
+            ],
+            "evidenceFlow": [
+              {
+                "kind": "calculation",
+                "title": "X-inclusive bills",
+                "detail": "Starter $25 + $10 X = $35/month; Advanced $67 + $10 X = $77/month. Annual totals: $240 + $120 = $360; $636 + $120 = $756."
+              }
+            ]
+          }
+        },
+        {
+          "id": "planable-price",
+          "source": {
+            "label": "Planable pricing FAQ",
+            "links": [
+              {
+                "label": "Official pricing FAQ",
+                "href": "https://help.planable.io/hc/en-us/articles/21715370520092-Questions-on-pricing"
+              }
+            ],
+            "filters": [
+              "Workspace: one",
+              "Plan: Pro",
+              "Pages: five",
+              "Users: one or five"
+            ],
+            "caveats": [
+              "Pro includes unlimited users, so the same base price applies to both headcounts.",
+              "Analytics costs another $14 monthly or $140 annually; created-post allowances are not successful publication counts."
+            ],
+            "evidenceFlow": [
+              {
+                "kind": "calculation",
+                "title": "Annual equivalent",
+                "detail": "Pro is $59 monthly or $590 annually. $590 ÷ 12 = $49.17, rounded to cents."
+              }
+            ]
+          }
+        },
+        {
+          "id": "socialbee-price",
+          "source": {
+            "label": "SocialBee plans",
+            "links": [
+              {
+                "label": "Official pricing",
+                "href": "https://socialbee.com/pricing/"
+              }
+            ],
+            "filters": [
+              "Profiles: five",
+              "Solo: Bootstrap",
+              "Five-user approval scenario: Accelerate plus four users"
+            ],
+            "caveats": [
+              "Bootstrap plus four users is cheaper at $69 monthly but has a more limited feature set."
+            ],
+            "evidenceFlow": [
+              {
+                "kind": "calculation",
+                "title": "Approval-capable team bill",
+                "detail": "$49 Accelerate + 4 × $10 user add-ons = $89 monthly. $490 + 4 × $100 = $890 yearly."
+              }
+            ]
+          }
+        },
+        {
+          "id": "sprout-price",
+          "source": {
+            "label": "Sprout Social plans",
+            "links": [
+              {
+                "label": "Official pricing",
+                "href": "https://sproutsocial.com/pricing/"
+              }
+            ],
+            "filters": [
+              "Plan: Essentials",
+              "Social profiles: five",
+              "Seats: one or five"
+            ],
+            "caveats": [
+              "Essentials seat examples do not establish a match to Cadence's planned approval roles.",
+              "Premium Analytics and Listening are separately priced add-ons for higher plans."
+            ],
+            "evidenceFlow": [
+              {
+                "kind": "calculation",
+                "title": "Five-seat example",
+                "detail": "$99 monthly per seat × 5 = $495/month. Annual $79 monthly equivalent per seat × 12 × 5 = $4,740/year."
+              }
+            ]
+          }
+        },
+        {
+          "id": "hootsuite-price",
+          "source": {
+            "label": "Hootsuite UK plans",
+            "links": [
+              {
+                "label": "Official plans",
+                "href": "https://www.hootsuite.com/plans"
+              }
+            ],
+            "filters": [
+              "Locale/currency: UK GBP",
+              "Billing: annual",
+              "Plan: Standard",
+              "Seats: one or five"
+            ],
+            "caveats": [
+              "UK month-to-month prices were unavailable; £89 per seat is an annual effective rate.",
+              "Standard's shared seat access is not the approval-capable Advanced configuration."
+            ],
+            "evidenceFlow": [
+              {
+                "kind": "calculation",
+                "title": "Annual seat cost",
+                "detail": "The rendered UK Standard card showed £89 per user/month annually. 5 × £89 = £445 effective/month; £445 × 12 = £5,340/year."
+              }
+            ]
+          }
+        },
+        {
+          "id": "later-price",
+          "source": {
+            "label": "Later plans",
+            "links": [
+              {
+                "label": "Official pricing",
+                "href": "https://later.com/pricing/"
+              },
+              {
+                "label": "Social Set definition",
+                "href": "https://help.later.com/hc/en-us/articles/360059362253-Choose-a-Later-Social-Plan"
+              }
+            ],
+            "caveats": [
+              "Later's current supported list excludes X, so its prices are not an exact five-network comparison.",
+              "The monthly toggle could not be verified; only observed annual prices are presented."
+            ],
+            "evidenceFlow": [
+              {
+                "kind": "calculation",
+                "title": "Five-user partial substitute",
+                "detail": "Growth $450/year + 3 × $45/year user add-ons = $585/year, equivalent to $48.75/month. This covers four of Cadence's launch networks."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "ai-market-parity",
+      "title": "AI writing, insights, trends and alt text already exist",
+      "queries": [
+        {
+          "id": "buffer-insights",
+          "source": {
+            "label": "Buffer Insights",
+            "links": [
+              {
+                "label": "Insights documentation",
+                "href": "https://support.buffer.com/en-us/articles/using-insights-in-buffer-x4gLauQU5a"
+              },
+              {
+                "label": "Plan availability",
+                "href": "https://buffer.com/pricing"
+              }
+            ],
+            "caveats": [
+              "Advertised availability does not establish output quality, data completeness or performance uplift."
+            ]
+          },
+          "summary": "Buffer already has free AI writing and performance takeaways with next-post prompts."
+        },
+        {
+          "id": "publer-ai",
+          "source": {
+            "label": "Publer AI and discovery",
+            "links": [
+              {
+                "label": "AI capabilities",
+                "href": "https://publer.com/features/ai-assist"
+              },
+              {
+                "label": "Trending-post explorer",
+                "href": "https://publer.com/tools/marketing-trending-posts"
+              }
+            ]
+          },
+          "summary": "AI writing, brand voice, image alt text and trend discovery are already advertised."
+        },
+        {
+          "id": "metricool-ai",
+          "source": {
+            "label": "Metricool Studio and alt text",
+            "links": [
+              {
+                "label": "Studio help",
+                "href": "https://help.metricool.com/what-is-metricool-studio-o4pac"
+              },
+              {
+                "label": "AI alt text guide",
+                "href": "https://help.metricool.com/how-to-add-alt-text-to-your-images-using-ai-mkl42"
+              }
+            ]
+          },
+          "summary": "Connected-account AI reporting and AI-generated alt text already exist."
+        },
+        {
+          "id": "hootsuite-ai",
+          "source": {
+            "label": "Hootsuite AI tools",
+            "links": [
+              {
+                "label": "Standard product",
+                "href": "https://www.hootsuite.com/plans/standard"
+              },
+              {
+                "label": "Image alt text help",
+                "href": "https://help.hootsuite.com/s/article/edit-images"
+              },
+              {
+                "label": "Free bio generator",
+                "href": "https://www.hootsuite.com/social-media-tools/bio-generator"
+              }
+            ]
+          },
+          "summary": "Performance questions, industry topics, AI alt text and free bio writing are advertised."
+        },
+        {
+          "id": "later-trends",
+          "source": {
+            "label": "Later Future Insights",
+            "links": [
+              {
+                "label": "Official trend documentation",
+                "href": "https://help.later.com/hc/en-us/articles/33212399449879-Social-Listening-Future-Insights"
+              }
+            ],
+            "caveats": [
+              "Later Scale's trend summaries and forecasts are vendor capabilities, not verified prediction accuracy."
+            ]
+          },
+          "summary": "Later Scale already offers niche trend summaries and AI explanations."
+        }
+      ]
+    },
+    {
+      "id": "positioning-limits",
+      "title": "Account and collaboration allowances constrain differentiation",
+      "assumptions": [
+        "Cadence's source-based workflow and later offline AI are proposals to validate; no superiority or willingness to pay was measured."
+      ],
+      "queries": [
+        {
+          "id": "unlimited-accounts",
+          "source": {
+            "label": "Hootsuite and Sprout account plans",
+            "links": [
+              {
+                "label": "Hootsuite Professional",
+                "href": "https://www.hootsuite.com/plans/professional"
+              },
+              {
+                "label": "Sprout official plans",
+                "href": "https://sproutsocial.com/pricing/"
+              }
+            ]
+          },
+          "summary": "Unlimited social accounts/profiles are already offered on relevant higher plans."
+        },
+        {
+          "id": "unlimited-users",
+          "source": {
+            "label": "Collaboration pricing alternatives",
+            "links": [
+              {
+                "label": "Buffer pricing",
+                "href": "https://buffer.com/pricing"
+              },
+              {
+                "label": "Planable pricing FAQ",
+                "href": "https://help.planable.io/hc/en-us/articles/21715370520092-Questions-on-pricing"
+              },
+              {
+                "label": "Metricool pricing",
+                "href": "https://metricool.com/pricing/"
+              }
+            ]
+          },
+          "summary": "Buffer Team, Planable paid plans and Metricool Advanced offer unlimited collaborators."
+        },
+        {
+          "id": "free-competition",
+          "source": {
+            "label": "Buffer and Publer free plans",
+            "links": [
+              {
+                "label": "Buffer pricing",
+                "href": "https://buffer.com/pricing"
+              },
+              {
+                "label": "Publer plan definitions",
+                "href": "https://publer.com/help/en/article/what-are-publers-plans-and-pricing-15h4yqh"
+              }
+            ],
+            "caveats": [
+              "Cadence's one-account Free allowance is a confirmed product choice, not a market-leading account limit."
+            ]
+          },
+          "summary": "Buffer and Publer offer three free connections, with Publer excluding X."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+# Cadence: Meta video diagnostic evidence
+
+Checked **5 October 2026**. Scope: authorised organic Instagram/Facebook content, not advertising video metrics. No account was connected and no authenticated API request was made. Findings below distinguish a native product feature, a current SDK field/edge, and a verified response contract.
+
+## Recommendation
+
+Build the diagnostic schema and import workflow now. Treat Instagram aggregate watch/skip metrics as integration candidates. Do not promise automatic Instagram timestamp retention analysis from the public API on this evidence. Facebook retention bins and usable caption text require a current endpoint contract and an authorised representative response before being enabled. Aggregate watch time alone cannot identify the moment viewers leave.
+
+## Evidence matrix
+
+| Signal | Native Meta products | Third-party access evidence inspected | Cadence status |
+|---|---|---|---|
+| Instagram retention curve | Meta announced an interactive moment-by-moment Retention Chart for creators in November 2023 [1] | Current Meta-owned `InstagramInsightsResult.Metric` list contains no retention-curve field; main Media Insights page could not be fetched [4][8] | Not exposed in the inspected SDK metric list; actual public API support unverified. Native visibility is not access permission. |
+| Instagram skip rate | Edits launch explicitly describes feedback on skip rate [3] | Current official SDK includes `reels_skip_rate` [4] | Candidate. Exact threshold, denominator, unit, period, estimation flag and account/media eligibility need the current metric description plus a sample response. Do not invent a three-second definition from secondary sources. |
+| Instagram aggregate watch time | Native total/average watch time announced in April 2023 [2] | SDK includes `ig_reels_video_view_total_time` and `ig_reels_avg_watch_time` [4] | Candidate. Confirm current API units/denominator and conversion before displaying. Do not divide by whichever `views` count happens to be available. |
+| Instagram views/reach/crossposting | Native Reels Plays definition was expanded to include replays in November 2023 [1] | SDK lists `views`, `reach`, `facebook_views`, `crossposted_views`, `total_views` [4] | Candidate fields; applicability and definitions must be verified individually. A count containing replays is not a unique-person denominator. |
+| Instagram replays as a separate signal | Native Replays feature announced [1] | Current inspected metric enum does not list historical `clips_replays_count` or `ig_reels_aggregated_all_plays_count` [4] | Current separate replay metric unverified. Do not enable old fields merely because an older article/SDK includes them. |
+| Instagram timed transcript | IG Media SDK lists a `caption` field, plus `media_url`; it does not show a transcript/caption-track edge [5] | No timed spoken transcript response verified | Use an owner-supplied timed transcript or transcription of the user's own authorised uploaded media. The post caption is not a speech transcript. |
+| Facebook Reel retention graph | Meta announced native professional-dashboard retention graphs for Reels in June/November 2023 [6] | Current Python SDK has `GET /{video-id}/video_insights`, but accepts arbitrary metric strings and does not establish which retention metrics work for a current organic Reel [7] | Current organic Reel retention curve support, interval meaning and denominator unverified. Do not assume dashboard export or API parity. |
+| Facebook video watch time/replays/skip metrics | Native professional-dashboard watch/retention reporting exists [6] | Main Video Insights reference could not be fetched; no authorised response inspected [8] | Unverified current organic contracts. Advertising play-through fields are not substitutes. |
+| Facebook caption tracks | Current Python SDK exposes `GET /{video-id}/captions` [7] | Edge exists in generated SDK; response content, caption-file retrieval, auto-caption coverage, Reel eligibility and grants were not verified | Candidate only. Handle missing/unavailable tracks, and retain an owner-upload/transcription path. |
+
+## What is established versus still unknown
+
+- **Established SDK shape:** Instagram uses `GET /{ig-media-id}/insights`, with `metric`, `period` and `breakdown` parameters, targeting `InstagramInsightsResult` [5]. The metric list establishes candidate names, not proof that every listed metric works for every media product or login flow.
+- **Established account boundary:** Meta's official collection describes Business/Creator professional accounts. Facebook Login requires a linked Page and excludes consumer accounts; Instagram Login is a separate configuration that does not require that linked Page [9]. This collection's publishing/messaging scopes do not establish the insight-specific permission chain.
+- **Not yet established:** current skip-rate definition/denominator; watch-time units; whether exact media metrics are lifetime-only; eligible account/media/version; data delay; suppression/minimum sample; retrieval lookback and timezone. Preserve these as explicit metadata, not inferred defaults.
+- **No precise timestamp claim yet:** the public sources inspected establish native moment-by-moment UI, not the resolution or semantics of accessible API bins. If the available evidence is a five-second interval, report that interval; do not label its midpoint an exact departure timestamp.
+- **Historical Facebook references are not launch contracts:** older metrics, periods and formats require revalidation. Any relative retention compared with other videos would not be interchangeable with audience retention within this video.
+- **Version sensitivity:** SDK `main` was inspected on the date above, not pinned as an API compatibility guarantee. Pin the chosen Graph API version during the integration spike, document the supported metric/format matrix and retain raw source definitions. Meta's June 2025 announcement says Facebook video creation was moving toward all videos being shared as Reels [10]; do not assume an older feed-video integration automatically supports new Reels.
+
+## Diagnostic constraints
+
+1. Store provider, account/media IDs, organic/paid scope, source metric name, definition/version, unit, denominator semantics, aggregation period, source interval/timezone, fetched time and freshness. A missing metric is missing, not zero.
+2. For retention bins, preserve bin start/end, elapsed-time versus fraction-of-duration axis, value meaning, population, smoothing/estimation and missing bins. Keep aggregates and curves distinct.
+3. Join only the exact published video revision and its matching timed transcript. Imported transcripts need language, timing provenance, confidence and an owner correction path. Check trimmed introductions, speed changes, music and platform-added material before mapping lines.
+4. A steep early fall plus relatively high verified skip rate can support an **opening weakness hypothesis**, compared with the account's similar-length content. It cannot prove the hook caused the decline; distribution, audience mismatch, autoplay and presentation are plausible alternatives.
+5. A later fall can identify an interval for review when genuine bins exist. The line at that interval is an associated segment, not a proven causal line. Suggest moving the payoff earlier or shortening an outro as a test, and evaluate the next video's same-age, same-format results.
+6. If only watch-time/skip aggregates exist, explain those and compare with a suitable baseline; offer a native-dashboard/import step for deeper analysis. Do not manufacture a curve or exit count from an average.
+7. Owner uploads/exports must keep rights, account, date/period, metric definition and video-version provenance. Do not assume native retention charts are exportable; support a user-entered/imported series only when the owner can actually provide it. A screenshot is approximate evidence that needs reviewed extraction and coarse precision.
+8. Revalidate Meta Platform Terms, access scopes, permitted AI processing/sharing and data retention before enabling API-derived AI input. A failed terms retrieval does not grant permission. Avoid cross-customer training; imported material also needs its own rights and privacy checks [11].
+
+## Competitive context
+
+Explaining metrics is not a verified unique feature. Meta's Edits launch already describes skip-rate feedback [3]. Its September 2026 Meta One announcement describes an **upcoming** Edits assistant to analyse Instagram insights and brainstorm ideas [12]. Cadence's potential differentiation is the usable workflow across networks: show evidence, identify a supported review interval, align the exact transcript and create a measurable editing experiment. Future announcements should not be described as shipped functionality.
+
+## Sources and retrieval limitations
+
+1. [Meta: New Ways to Create Content on Instagram, 15 November 2023](https://about.fb.com/news/2023/11/new-ways-to-create-content-on-instagram/).
+2. [Meta: New Features on Instagram Reels, April 2023](https://about.fb.com/news/2023/04/instagram-reels-trending-audio-and-gifts-updates/). Historical native definitions; do not treat its original plays denominator as the current API contract.
+3. [Meta: Introducing Edits, April 2025](https://about.fb.com/news/2025/04/introducing-edits-streamlined-video-creation-app/).
+4. [Meta-owned current Node SDK: InstagramInsightsResult](https://github.com/facebook/facebook-nodejs-business-sdk/blob/main/src/objects/instagram-insights-result.js). Raw source successfully read; candidate watch/skip and view fields confirmed.
+5. [Meta-owned current Python SDK: IGMedia](https://github.com/facebook/facebook-python-business-sdk/blob/main/facebook_business/adobjects/igmedia.py). Raw source successfully read; media fields and insight request shape confirmed.
+6. [Meta: Helping Creators Test Content and Earn Rewards, November 2023](https://about.fb.com/news/2023/11/helping-creators-test-content-and-earn-rewards/), [Meta: Helping Creators Get Discovered, June 2023](https://about.fb.com/news/2023/06/helping-creators-get-discovered-and-earn-money-on-facebook/). Native dashboard evidence only; November article's 90-day history is not a current API lookback guarantee.
+7. [Meta-owned current Python SDK: AdVideo](https://github.com/facebook/facebook-python-business-sdk/blob/main/facebook_business/adobjects/advideo.py), [Page](https://github.com/facebook/facebook-python-business-sdk/blob/main/facebook_business/adobjects/page.py). The Page SDK's videos/reels edges return AdVideo; the class name alone does not mean every route is an advertising route. Its caption/video-insight edges do not establish permissions or metric availability.
+8. [Instagram Media Insights reference](https://developers.facebook.com/docs/instagram-platform/reference/instagram-media/insights/), [Instagram Login Insights](https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/insights/), [Video Insights reference](https://developers.facebook.com/docs/graph-api/reference/video/video_insights/), [Video captions reference](https://developers.facebook.com/docs/graph-api/reference/video/captions/). Retrieval returned HTTP 429/inaccessible bodies. Instagram Help Center redirected to login/temporary-block page. No missing page was treated as permission or universal absence.
+9. [Official Meta Instagram API collection](https://www.postman.com/meta/instagram/documentation/6yqw8pt/instagram-api), [Instagram Login collection](https://www.postman.com/meta/instagram/folder/6raa77c/instagram-api-with-instagram-login).
+10. [Meta: Making it Easier to Create Videos on Facebook, June 2025](https://about.fb.com/news/2025/06/making-it-easier-create-videos-facebook/).
+11. [Meta Platform Terms to revalidate](https://developers.facebook.com/terms/). Current terms could not be retrieved during this research; intended AI use remains a release gate.
+12. [Meta: Introducing Meta One, September 2026](https://about.fb.com/news/2026/09/introducing-meta-one-subscription-service-more-features-ai/).
+
+Verification: inspected the evidence file, confirmed its table distinguishes native/SDK/runtime evidence, checked primary source links against retrieved sources, and reviewed whitespace. No authenticated Meta contract test, export trial, transcript extraction or diagnostic computation ran.
