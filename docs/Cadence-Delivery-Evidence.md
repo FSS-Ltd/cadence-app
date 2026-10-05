@@ -4,7 +4,7 @@ Use with the mandatory step gate in [AGENTS.md](../AGENTS.md) and [BUILD.md](../
 
 | Step | State | PR / base | Checked revision and CI | Review and merge evidence | Blocker / next permitted action |
 | --- | --- | --- | --- | --- | --- |
-| 0.1 | Locally verified; publishing first PR | Private `FSS-Ltd/cadence-app`; base `main` initialized at `ef891c3afa5654a55a440523037ad7c6702b5ae9`; PR not yet opened | `node scripts/verify-build-plan.mjs` passed; `git diff --cached --check` passed; sensitive-key-pattern filename scan found no matches. Gitleaks/history scan awaits GitHub CI because the local scanner is unavailable. | Host CI, base protection, review and merge are unverified. | Push the full 0.1 foundation, open its PR against `main`, require successful current-revision checks and independent review, verify base protection, then record host evidence. Only then may 0.2 start. |
+| 0.1 | PR open; resolving CI license blocker | [#1](https://github.com/FSS-Ltd/cadence-app/pull/1) against `main`; private repository | PR head `a5c466d9ef160c46163c2f695b52167c661cb0bf`: Documentation and plan gates passed; Secret scan failed because the organization Gitleaks Action requires a paid license. A follow-up replaces it with the official Gitleaks CLI downloaded at a pinned version and verified SHA-256; its CI result is pending. | No independent review yet. `main` protection and merge remain unverified. | Push the license-free full-history scan, verify CI on the current PR revision, configure protected `main`, and obtain independent review. Only after a host-reported merge may 0.2 start. |
 | 0.2–5.2 | Planned | — | — | — | Not started. Progress one row at a time only after predecessor merge evidence. |
 
 ## Step 0.1 scope and acceptance
