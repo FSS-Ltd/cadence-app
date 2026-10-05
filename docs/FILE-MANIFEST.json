@@ -1,0 +1,236 @@
+{
+  "collected_on": "2026-10-05",
+  "copied_original_files": 32,
+  "files": [
+    {
+      "path": "Cadence-AI-Capability-Roadmap.md",
+      "original": "deliverables/cadence/Cadence-AI-Capability-Roadmap.md",
+      "original_sha256": "252c27205dbfe000e3d68fa9da15c8b541cbb43dfea4d6a08e9415c6e3214a3e",
+      "sha256": "cd6f2ab125c2df86257826e6f523ea0a3ba047a52aab19ed43dbbbd0615a4bb9",
+      "portable_links_updated": true
+    },
+    {
+      "path": "Cadence-AI-Deployment-Decision.md",
+      "original": "deliverables/cadence/Cadence-AI-Deployment-Decision.md",
+      "original_sha256": "fbe099e9a23f711e63959fde574b539694ec605f8c5657e93abcdea08d397bac",
+      "sha256": "87de3d4221ca383258b168a01d1df4f286232a4ec6b118f25ff3233360b9d60b",
+      "portable_links_updated": true
+    },
+    {
+      "path": "Cadence-Competitive-Pricing-and-Positioning.md",
+      "original": "deliverables/cadence/Cadence-Competitive-Pricing-and-Positioning.md",
+      "original_sha256": "1f1d1d41d71daea6f1db2e00c1d0c52a9d9621de95ea7e86b2a3ba9a2760ae62",
+      "sha256": "bbf862052374815e15dff140516f622d15f832b2cc1e411cab93f1a51e9e16e8",
+      "portable_links_updated": true
+    },
+    {
+      "path": "Cadence-Engineering-Contracts.md",
+      "original": "deliverables/cadence/Cadence-Engineering-Contracts.md",
+      "original_sha256": "83b4cbe17b741e62202b6d5885ba1d2680c517b910441d86c2ae56a6e77f3039",
+      "sha256": "e0caba07dc475704cecbebf5c7ce59a7b5430df11320f49306d7fccd7ac5dfe5",
+      "portable_links_updated": false
+    },
+    {
+      "path": "Cadence-Plans-and-Team-Access.md",
+      "original": "deliverables/cadence/Cadence-Plans-and-Team-Access.md",
+      "original_sha256": "6347aa09e939fd29054235af236edd0ea24aec902988a7f30455c9c5bc5e1f3b",
+      "sha256": "cfc5a381c3422038fbd873013dddf980f064fa89898afd63b5b22a251adbcb2a",
+      "portable_links_updated": true
+    },
+    {
+      "path": "Cadence-Recovered-Planning.md",
+      "original": "deliverables/cadence/Cadence-Recovered-Planning.md",
+      "original_sha256": "562ad04365f8a7d4513e8628c0a0904026a837c6e77345c3aff379aa4799bc7b",
+      "sha256": "ec1a3aa5d1e0de018d477be8625782c4e2abf6a31abdb5badf78b3ccae28a7fc",
+      "portable_links_updated": true
+    },
+    {
+      "path": "Cadence-Requirements-and-Decisions.md",
+      "original": "deliverables/cadence/Cadence-Requirements-and-Decisions.md",
+      "original_sha256": "9561eb66924f02e2c57cc9aba2d05c219a0676af000750e5f79a6bb4d1988460",
+      "sha256": "8d3fdb5840175c3ad274946d4fb1f2004269ef5818d1f3dd28123a1a3d87d421",
+      "portable_links_updated": true
+    },
+    {
+      "path": "Cadence-Video-Analytics-Coach.md",
+      "original": "deliverables/cadence/Cadence-Video-Analytics-Coach.md",
+      "original_sha256": "9e32f5d026b08e2ea276c875b7d0b53d9879b0f10b5dbaab47914500743cbf5d",
+      "sha256": "56643b58ebdf2285d3411cc2eb08b140c0cbe116557b2e04c80303974c193621",
+      "portable_links_updated": true
+    },
+    {
+      "path": "CadenceDesignSystem.png",
+      "original": "deliverables/cadence/CadenceDesignSystem.png",
+      "original_sha256": "336f63184c74ce6bba0b2b15d3639b1674fac16e77c469f37b934a7577e9f917",
+      "sha256": "336f63184c74ce6bba0b2b15d3639b1674fac16e77c469f37b934a7577e9f917",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-04-ai-feature-scope.md",
+      "original": "deliverables/cadence/research/2026-10-04-ai-feature-scope.md",
+      "original_sha256": "1cf1df1384f393151092203eab1a817bd822c45968bfcbd4e1549e8c2c70fef1",
+      "sha256": "f7b46750fb877531a276a3699b338bbe33055b5c5a6624f9df0a5a025b47d57d",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-04-hosting-options.md",
+      "original": "deliverables/cadence/research/2026-10-04-hosting-options.md",
+      "original_sha256": "62b7797bbc1e57b7bd11e790b27d2e1df77e93e04aaef23769ce71e2ce171ec7",
+      "sha256": "bce19f9b830b6b2651192106d3b5484298e2e03d14cfa917fac85e0ef1fdfa93",
+      "portable_links_updated": true
+    },
+    {
+      "path": "research/2026-10-04-iphone-ai-feasibility.md",
+      "original": "deliverables/cadence/research/2026-10-04-iphone-ai-feasibility.md",
+      "original_sha256": "5b3315f1b0ae77a82d9e4838f16671ce0a1fe286778bdbe7b7bc21be077eb424",
+      "sha256": "5b3315f1b0ae77a82d9e4838f16671ce0a1fe286778bdbe7b7bc21be077eb424",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-04-local-ai-deployment.md",
+      "original": "deliverables/cadence/research/2026-10-04-local-ai-deployment.md",
+      "original_sha256": "841924d178d8ac4f8afa3dbb99405b0e7c305329d22a56d8b2ca11b49337e15b",
+      "sha256": "841924d178d8ac4f8afa3dbb99405b0e7c305329d22a56d8b2ca11b49337e15b",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-04-publishing-feasibility.md",
+      "original": "deliverables/cadence/research/2026-10-04-publishing-feasibility.md",
+      "original_sha256": "f2ee8f1da53a712898fc17f3afe35352ac9def3eeab5ce42465765e29491dda5",
+      "sha256": "f2ee8f1da53a712898fc17f3afe35352ac9def3eeab5ce42465765e29491dda5",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-04-small-model-comparison.md",
+      "original": "deliverables/cadence/research/2026-10-04-small-model-comparison.md",
+      "original_sha256": "cf3b53b90ed942fc545eadf1073d0ac3a5cc1e416d666f08dc33f2e742f68d05",
+      "sha256": "cf3b53b90ed942fc545eadf1073d0ac3a5cc1e416d666f08dc33f2e742f68d05",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-ai-distribution-options.md",
+      "original": "deliverables/cadence/research/2026-10-05-ai-distribution-options.md",
+      "original_sha256": "9ab30ca22e36586c88197ba252fc1a1d45c6e17b72c674da2fa5b4a940cefb59",
+      "sha256": "9ab30ca22e36586c88197ba252fc1a1d45c6e17b72c674da2fa5b4a940cefb59",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-ai-evaluation-scorecard.md",
+      "original": "deliverables/cadence/research/2026-10-05-ai-evaluation-scorecard.md",
+      "original_sha256": "88d24d31c7c68d4a01786318df3237bf0a494c8a30d01dbf275ffa964fa4e3ff",
+      "sha256": "88d24d31c7c68d4a01786318df3237bf0a494c8a30d01dbf275ffa964fa4e3ff",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-competitor-price-calculations.html",
+      "original": "deliverables/cadence/research/2026-10-05-competitor-price-calculations.html",
+      "original_sha256": "f8964b6c7df63b1a2ad13f9e81790bd3e21f121cfa9645ab0b9af6ad1bb3707e",
+      "sha256": "f8964b6c7df63b1a2ad13f9e81790bd3e21f121cfa9645ab0b9af6ad1bb3707e",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-competitor-price-calculations.ipynb",
+      "original": "deliverables/cadence/research/2026-10-05-competitor-price-calculations.ipynb",
+      "original_sha256": "324545ff80314ebb7bc2b0036aff20306b0799b59d9ea2abbf23565b6208e4ab",
+      "sha256": "324545ff80314ebb7bc2b0036aff20306b0799b59d9ea2abbf23565b6208e4ab",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-competitor-sources.json",
+      "original": "deliverables/cadence/research/2026-10-05-competitor-sources.json",
+      "original_sha256": "679e1541dc865e331738372cf1698ef14c2684b27c9f4266e43b69fd42f12740",
+      "sha256": "679e1541dc865e331738372cf1698ef14c2684b27c9f4266e43b69fd42f12740",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-competitors-buffer-later.md",
+      "original": "deliverables/cadence/research/2026-10-05-competitors-buffer-later.md",
+      "original_sha256": "60e2bdd5c1093234af293e70cae1756882f31bce706b92b212912b821714a039",
+      "sha256": "60e2bdd5c1093234af293e70cae1756882f31bce706b92b212912b821714a039",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-competitors-planable-sprout.md",
+      "original": "deliverables/cadence/research/2026-10-05-competitors-planable-sprout.md",
+      "original_sha256": "74d454ba9ca0d35b5ece8ab3d07c0a50464cdd6ab5b7b23d4dc0ccef5769c87f",
+      "sha256": "74d454ba9ca0d35b5ece8ab3d07c0a50464cdd6ab5b7b23d4dc0ccef5769c87f",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-competitors-publer-metricool.md",
+      "original": "deliverables/cadence/research/2026-10-05-competitors-publer-metricool.md",
+      "original_sha256": "ffc58244163b88205e015cb27dfcd5163efb3227fea1054a00a9e75d34113d8b",
+      "sha256": "ffc58244163b88205e015cb27dfcd5163efb3227fea1054a00a9e75d34113d8b",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-competitors-socialbee-hootsuite.md",
+      "original": "deliverables/cadence/research/2026-10-05-competitors-socialbee-hootsuite.md",
+      "original_sha256": "b7a7ff60b612acf6b152718d0fadb2c9de78d8102b7a54ab910a7b04efd163a8",
+      "sha256": "b7a7ff60b612acf6b152718d0fadb2c9de78d8102b7a54ab910a7b04efd163a8",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-six-network-publishing-addendum.md",
+      "original": "deliverables/cadence/research/2026-10-05-six-network-publishing-addendum.md",
+      "original_sha256": "63ec6b04e0b709da87072897ac42ecbe997144dc38f145d86d575bc5a47b81af",
+      "sha256": "63ec6b04e0b709da87072897ac42ecbe997144dc38f145d86d575bc5a47b81af",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-vercel-supabase-feasibility.md",
+      "original": "deliverables/cadence/research/2026-10-05-vercel-supabase-feasibility.md",
+      "original_sha256": "944829da9a9956794707f6abff4716c6f2055c81ad5f466d2b19a45c31020ddf",
+      "sha256": "944829da9a9956794707f6abff4716c6f2055c81ad5f466d2b19a45c31020ddf",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-video-analytics-sources.json",
+      "original": "deliverables/cadence/research/2026-10-05-video-analytics-sources.json",
+      "original_sha256": "d30e84af2ab48f2f4dcd20c6f8994792ec5d12632eb29906ffb468c529a230ef",
+      "sha256": "d30e84af2ab48f2f4dcd20c6f8994792ec5d12632eb29906ffb468c529a230ef",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-video-diagnostics-meta.md",
+      "original": "deliverables/cadence/research/2026-10-05-video-diagnostics-meta.md",
+      "original_sha256": "fdf203a629aa8e24fdd928aa8c49b01f1fb8a12e6b876c21d1b3617a2bb30d01",
+      "sha256": "fdf203a629aa8e24fdd928aa8c49b01f1fb8a12e6b876c21d1b3617a2bb30d01",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/2026-10-05-video-diagnostics-network-access.md",
+      "original": "deliverables/cadence/research/2026-10-05-video-diagnostics-network-access.md",
+      "original_sha256": "294439de0a2d37de34b2f4486c04a9144fd737fe81b3e7af3909427dd788531a",
+      "sha256": "294439de0a2d37de34b2f4486c04a9144fd737fe81b3e7af3909427dd788531a",
+      "portable_links_updated": false
+    },
+    {
+      "path": "plans/2026-10-05-cadence.md",
+      "original": "docs/superpowers/plans/2026-10-05-cadence.md",
+      "original_sha256": "91065ee9997e290ded878668d9075587269ea7db5d96b4faa4c75d4b198eee4f",
+      "sha256": "fdee89fd024f6bae1b8c83996e05909e9b5551bb3df3dc700fd0a3e1d3bb7552",
+      "portable_links_updated": true
+    },
+    {
+      "path": "research/sources/cadence-competitor-pricing-sources-2026-10-05.html",
+      "original": "saved-visualizations/cadence-competitor-pricing-sources-2026-10-05.html",
+      "original_sha256": "8d9695223a585a60b9f7a49209a07f5f126d94bd63549b9415479a3c30c99671",
+      "sha256": "8d9695223a585a60b9f7a49209a07f5f126d94bd63549b9415479a3c30c99671",
+      "portable_links_updated": false
+    },
+    {
+      "path": "research/sources/cadence-video-analytics-sources-2026-10-05.html",
+      "original": "saved-visualizations/cadence-video-analytics-sources-2026-10-05.html",
+      "original_sha256": "2fb1e3504a3572486949d75d2eb53d0a0d94390f106bb98da415446e648e3ea9",
+      "sha256": "2fb1e3504a3572486949d75d2eb53d0a0d94390f106bb98da415446e648e3ea9",
+      "portable_links_updated": false
+    },
+    {
+      "path": "README.md",
+      "original": null,
+      "sha256": "29c5d76c3a39b750e27eb00d1d8825fd7aa98f16d8e52af3e419e0bb3f9365cd",
+      "portable_links_updated": false
+    }
+  ]
+}

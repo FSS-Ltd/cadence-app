@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "video-diagnostic-method",
+      "title": "What retention patterns can support",
+      "queries": [
+        {
+          "id": "retention-interpretation",
+          "source": {
+            "label": "YouTube retention guidance",
+            "links": [
+              {
+                "label": "Key moments for audience retention",
+                "href": "https://support.google.com/youtube/answer/9314415"
+              }
+            ],
+            "caveats": [
+              "A dip can reflect skipping or leaving; a spike can reflect interest or confusion. These patterns do not establish an individual viewer's reason."
+            ],
+            "evidenceFlow": [
+              {
+                "kind": "source",
+                "title": "Interpretation basis",
+                "detail": "The official guidance describes intro retention, dips, spikes and reviewing the relevant segment. Cadence's proposed coach separates the measured pattern from possible causes and a next experiment."
+              }
+            ]
+          },
+          "summary": "Retention changes locate content to inspect; transcript alignment identifies overlapping speech rather than proving that a line caused viewers to leave."
+        }
+      ]
+    },
+    {
+      "id": "platform-data-boundaries",
+      "title": "Timed analytics depends on the actual platform route and evidence",
+      "queries": [
+        {
+          "id": "tiktok-retention",
+          "source": {
+            "label": "TikTok Accounts API",
+            "links": [
+              {
+                "label": "Post-data endpoint",
+                "href": "https://business-api.tiktok.com/portal/docs/get-post-data-of-a-tiktok-account/v1.3"
+              },
+              {
+                "label": "Accounts overview",
+                "href": "https://business-api.tiktok.com/portal/docs/accounts-api-overview/v1.3"
+              }
+            ],
+            "caveats": [
+              "Accounts API access needs application approval, account authorization and scopes; ordinary Display API is a different route.",
+              "The inspected endpoint includes paid and organic views; preserve the source's population instead of assuming organic-only data."
+            ]
+          },
+          "summary": "The approved Accounts endpoint documents retention by second and percentage, with watch-time/completion fields; its post caption is not a timed speech transcript."
+        },
+        {
+          "id": "meta-retention",
+          "source": {
+            "label": "Meta native and SDK evidence",
+            "links": [
+              {
+                "label": "Native Instagram retention chart",
+                "href": "https://about.fb.com/news/2023/11/new-ways-to-create-content-on-instagram/"
+              },
+              {
+                "label": "Meta SDK metric list",
+                "href": "https://github.com/facebook/facebook-nodejs-business-sdk/blob/main/src/objects/instagram-insights-result.js"
+              }
+            ],
+            "caveats": [
+              "The inspected SDK has watch/skip candidates but no retention-curve field; exact current response definitions and API access remain unverified.",
+              "Native dashboard availability does not establish third-party API access."
+            ]
+          },
+          "summary": "Instagram native retention exists, but automatic timestamp analysis is not established by the API evidence reviewed here."
+        },
+        {
+          "id": "linkedin-aggregates",
+          "source": {
+            "label": "LinkedIn video analytics",
+            "links": [
+              {
+                "label": "Organization video analytics",
+                "href": "https://learn.microsoft.com/en-us/linkedin/marketing/community-management/shares/video-analytics-api"
+              },
+              {
+                "label": "Member video statistics",
+                "href": "https://learn.microsoft.com/en-us/linkedin/marketing/community-management/members/video-statistics"
+              }
+            ],
+            "caveats": [
+              "Member and organization view definitions differ; the inspected routes list aggregate statistics rather than timeline bins.",
+              "Permission for deterministic reporting is separate from permission to process API-derived metrics with AI."
+            ]
+          },
+          "summary": "Aggregate watch statistics support explanations but not a precisely located drop-off."
+        },
+        {
+          "id": "x-quartiles",
+          "source": {
+            "label": "X media metrics",
+            "links": [
+              {
+                "label": "Official metrics",
+                "href": "https://docs.x.com/x-api/fundamentals/metrics"
+              },
+              {
+                "label": "API usage and billing",
+                "href": "https://docs.x.com/x-api/fundamentals/post-cap"
+              }
+            ],
+            "caveats": [
+              "Owner-context private metrics have a limited retrieval window and API reads cost money; Cadence's current budget does not fund these reads."
+            ]
+          },
+          "summary": "Playback milestones at 0/25/50/75/100 percent locate only broad intervals, not an exact transcript line."
+        },
+        {
+          "id": "youtube-later",
+          "source": {
+            "label": "YouTube later-phase access",
+            "links": [
+              {
+                "label": "Analytics dimensions",
+                "href": "https://developers.google.com/youtube/analytics/dimensions"
+              },
+              {
+                "label": "Caption download",
+                "href": "https://developers.google.com/youtube/v3/docs/captions/download"
+              }
+            ],
+            "caveats": [
+              "YouTube remains outside Cadence's five-network launch scope.",
+              "Caption text needs separate permissions and a usable track; analytics-only authorization is insufficient."
+            ]
+          },
+          "summary": "Retention uses normalized intervals; usable timed captions require a separate authorized download."
+        }
+      ]
+    }
+  ]
+}
