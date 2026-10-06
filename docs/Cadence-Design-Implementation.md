@@ -12,6 +12,7 @@ conventions. Older recovered boards and research remain historical context.
 | S02 — Today / Command Centre | `projects/16855835926505388078/screens/0ff4d632f1eb4210a411cd70111d1271` | Step 0.3 command-centre layout and responsive application navigation. |
 | S03 — Capture / Founder Light Mode | `projects/16855835926505388078/screens/fbc1c5496c174f11a525416fc2cb51e0` | Capture flow reference for the later private-source build step; not an enabled capture function in step 0.3. |
 | S05 — Brand Playbook / Guidelines | `projects/16855835926505388078/screens/b59f6a8ed747400fab964e9a2621b872` | Step 1.1 custom sign-in presentation and Clerk security settings; Stitch supplies branding, while Clerk retains credential/MFA behavior. |
+| CadenceIcon.png — C mark | `projects/16855835926505388078/screens/7693222071201219565` | Source for the transparent multicolour C mark used in the sign-in/workspace lockup and app icon. |
 
 ## Step 0.3 mapping
 
@@ -40,8 +41,9 @@ The sign-in page is a custom Cadence screen informed by the Stitch S05 brand
 playbook: Sora headings, Inter controls, the owner-supplied Tangerine
 (`#FB923C`), Charcoal (`#0B0D12`), Ivory (`#F9F6F1`) and Slate (`#94A3BB`)
 palette, light/dark surface tokens, eight-pixel control rounding, 16-pixel
-panels and compact 4/8/12/16/24 spacing. The original multicolour Cadence C
-mark retains its supplied gradient. Tangerine actions use charcoal text, and
+panels and compact 4/8/12/16/24 spacing. The Cadence C mark uses the supplied
+Stitch icon with its multicolour gradient preserved and square background
+removed. Tangerine actions use charcoal text, and
 Slate-derived surfaces/text are tuned for contrast. Clerk's sign-in component
 handles credentials and MFA challenges inside that shell. The page exposes the
 invitation-only and private-by-default expectations without implying that a
