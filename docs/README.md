@@ -1,6 +1,6 @@
 # Cadence documentation
 
-Collected on 5 October 2026. This folder contains the product planning, engineering specifications, research and recovered branding assembled for Cadence. It is a planning bundle; application implementation has not started.
+Collected on 5 October 2026. This folder contains the product planning, engineering specifications, research and recovered branding assembled for Cadence. The application shell is being implemented under `apps/web`; service integration and user-data features remain gated by the numbered plan.
 
 ## Start here
 
@@ -9,10 +9,12 @@ Collected on 5 October 2026. This folder contains the product planning, engineer
 3. [Engineering contracts](Cadence-Engineering-Contracts.md) — publishing rules, data boundaries, permissions and illustrative implementation contracts.
 4. [Privacy architecture](Cadence-Privacy-Architecture.md) — identity, data flows, private-source access, retention, deletion, backup/recovery and each step's privacy acceptance.
 5. [Delivery evidence](Cadence-Delivery-Evidence.md) — current PR, CI, review, merge evidence and blocker for the active build step.
+6. [Stitch design implementation record](Cadence-Design-Implementation.md) — authoritative UI/UX references and privacy-safe implementation mapping.
 
 ## Implemented foundation records
 
 - [Database and access foundation](Cadence-Database-Access-Foundation.md) — step 0.2 schema boundaries, roles, synthetic verification and deployment limits.
+- [Delivery evidence](Cadence-Delivery-Evidence.md) — the authoritative step, PR, check and merge status.
 
 The current requirements and phased plan govern implementation. The dated research records preserve evidence and earlier options; follow each document's status notes when an earlier assumption has been superseded.
 

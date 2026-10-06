@@ -87,7 +87,7 @@ The numbered sequence and exact delivery-gate procedure are recorded in the [imp
 | --- | --- |
 | 0.1 | Preserve docs/research; do not commit local secrets; secret-scan history; isolated preview/test credentials; publishing disabled. |
 | 0.2 | Tenant-consistent relations; RLS and grants; server roles; pooled actor-context reset; direct API/Storage/RPC and cross-tenant denials. |
-| 0.3 | Synthetic screens only; private navigation/search states; keyboard, responsive, contrast and denial-recovery checks. |
+| 0.3 | Implement the Stitch S02 shell as synthetic-only UI; private/shared states; keyboard, responsive, contrast and denial-recovery checks. S03 remains the reference for the later capture gate. |
 | 1.1 | Verified identity and exact pilot allowlist; session freshness; webhook replay/deletion; both MFA modes. |
 | 1.2 | No client self-grant/escalation; membership removal and concurrent seat/account limits; protect last owner and audit. |
 | 1.3 | Capturer-only read until explicit grant; excerpt-field allowlist; separate audited recovery; revoke invalidates descendants; erase lineage. |
@@ -109,4 +109,6 @@ The numbered sequence and exact delivery-gate procedure are recorded in the [imp
 
 ## Current readiness boundary
 
-No application, identity tenant, database, storage bucket, backup task, social account or cloud environment is configured by this record. Do not enter real information before step 1.8 closes. Before the pilot, recheck provider terms, processor/subprocessor locations, actual regional settings and access logs; confirm email, export/erasure, backup restoration and incident ownership. Do not state that a control, certification or legal compliance exists until evidence supports the claim.
+The step 0.3 web shell follows Stitch S02 and is a synthetic-only interface. Stitch S03 is reserved for the later private-capture implementation. The shell has no authentication, connected identity tenant, live content, persistent browser storage, analytics or service worker. Pages are rendered dynamically with `Cache-Control: private, no-store` and are marked no-index. The access-denied route and visibility labels demonstrate intended states; they are not substitutes for server authorization, which must be implemented and tested in the later identity and content steps. See the [Stitch design implementation record](Cadence-Design-Implementation.md).
+
+No live identity tenant, application database, storage bucket, backup task, social account or production cloud environment is configured. Do not enter real information before step 1.8 closes. Before the pilot, recheck provider terms, processor/subprocessor locations, actual regional settings and access logs; confirm email, export/erasure, backup restoration and incident ownership. Do not state that a control, certification or legal compliance exists until evidence supports the claim.

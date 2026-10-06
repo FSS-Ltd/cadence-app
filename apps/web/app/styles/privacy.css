@@ -1,0 +1,24 @@
+.privacy-badge {
+  display: inline-flex;
+  min-height: 1.45rem;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.18rem 0.48rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+.privacy-badge-private {
+  border-color: color-mix(in srgb, var(--color-accent) 18%, var(--color-line));
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+.privacy-badge-shared {
+  border-color: color-mix(in srgb, var(--color-notice) 22%, var(--color-line));
+  background: var(--color-notice-soft);
+  color: var(--color-notice);
+}
+.privacy-badge > span {
+  font-size: 0.55rem;
+}

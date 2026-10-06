@@ -1,0 +1,20 @@
+{
+  "name": "cadence",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @cadence/web dev",
+    "build": "pnpm --filter @cadence/web build",
+    "start": "pnpm --filter @cadence/web start",
+    "lint": "pnpm --filter @cadence/web lint",
+    "typecheck": "pnpm --filter @cadence/web typecheck",
+    "format": "prettier --write \"apps/web/**/*.{js,mjs,ts,tsx,css,json}\" \"package.json\" \"pnpm-workspace.yaml\" \".github/workflows/privacy-baseline.yml\"",
+    "format:check": "prettier --check \"apps/web/**/*.{js,mjs,ts,tsx,css,json}\" \"package.json\" \"pnpm-workspace.yaml\" \".github/workflows/privacy-baseline.yml\""
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}

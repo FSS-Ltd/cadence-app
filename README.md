@@ -1,12 +1,13 @@
 # Cadence
 
-Cadence is planned as a privacy-first social media planning and publishing application for FSS. This repository currently contains its requirements, design and engineering contracts; application code and infrastructure have not been created.
+Cadence is a privacy-first social media planning and publishing application for FSS. The repository contains its product, engineering and privacy contracts, Supabase access foundation, and a synthetic-only web shell in `apps/web`. No identity tenant, live database, media bucket, social account or production infrastructure is connected.
 
 ## Start here
 
 - [Requirements and decisions](docs/Cadence-Requirements-and-Decisions.md)
 - [Numbered implementation plan](docs/plans/2026-10-05-cadence.md)
 - [Privacy architecture, data flow and retention](docs/Cadence-Privacy-Architecture.md)
+- [Stitch design implementation record](docs/Cadence-Design-Implementation.md)
 - [Engineering contracts](docs/Cadence-Engineering-Contracts.md)
 - [Delivery evidence and active gate](docs/Cadence-Delivery-Evidence.md)
 
@@ -20,11 +21,16 @@ Cadence's identity provider is Clerk and its planned database/media services are
 
 Each numbered step uses a dedicated branch and pull request. The PR template requires an explicit privacy/data impact and acceptance evidence. Do not start the next step until the current PR has passing applicable checks on its latest revision and is confirmed merged into the protected base. See [AGENTS.md](AGENTS.md) and [BUILD.md](BUILD.md).
 
-The current documentation-only CI check is:
+Install the workspace and run the web checks:
 
 ```sh
+pnpm install --frozen-lockfile
+pnpm format:check
+pnpm lint
+pnpm typecheck
+pnpm build
 node scripts/verify-build-plan.mjs
 git diff --check
 ```
 
-Application-specific format, lint, type, unit, database, browser and production-build scripts will be defined with their relevant app/database build steps.
+The web shell has no authentication or user-content persistence yet. Its examples are fictional, all page responses are `no-store`, and the preview is not suitable for real account data. Follow the numbered plan and delivery evidence before connecting services or admitting real content.
