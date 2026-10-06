@@ -29,6 +29,11 @@ CI on its current revision and is confirmed merged into the designated base
 branch. Phase 1.2 cannot start until phase 1.1 meets all three conditions: PR
 raised, CI green, PR merged.**
 
+For this Cadence repository, the owner is the solo developer and reviews every
+PR's full diff before merging. The active GitHub ruleset requires a PR and the
+named CI checks, with zero approval reviews; an independent approval is not a
+delivery gate. Record the owner's review confirmation in the delivery evidence.
+
 - A build step is a numbered delivery unit, such as `1.1`, or a standalone
   implementation change. Give each step its own branch and PR; do not combine
   consecutive steps or accumulate them on an unmerged branch.
@@ -43,10 +48,12 @@ raised, CI green, PR merged.**
   Explicitly identify checks that genuinely do not apply; never waive required CI.
 - A local commit, pushed branch, approval, auto-merge setting or merge queue
   entry is not a merge. Verify the host reports the PR as merged and record the
-  merge commit. Address blocking reviews and required approvals before merging.
+  merge commit. Address blocking review comments and any configured required
+  approvals before merging.
 - Creating the step's branch, pushing its changes and opening its PR are part of
   authorized build delivery. Merge only within the user's existing authorization
-  and repository policy. Do not bypass protections or approve your own PR.
+  and repository policy. Do not bypass protections or submit a formal approval
+  review on your own PR.
 - If PR access, CI, review or merge is blocked, report the exact blocker and
   remain on the current step. Do not implement, scaffold, delegate or open a PR
   for the next step while waiting. Read-only investigation to unblock the current
