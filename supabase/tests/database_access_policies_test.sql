@@ -1,5 +1,5 @@
 BEGIN;
-SELECT plan(29);
+SELECT plan(31);
 
 -- Keep pgTAP assertions callable while tests assume the least-privilege role.
 GRANT USAGE ON SCHEMA extensions TO cadence_command;
@@ -52,6 +52,24 @@ select ok(
   and not has_table_privilege('cadence_command', 'private.source_grants', 'update')
   and not has_table_privilege('cadence_command', 'private.workspaces', 'update'),
   'command cannot mutate memberships, auth policy, identity mappings, grants or workspaces'
+);
+select ok(
+  has_column_privilege('cadence_command', 'private.sources', 'title', 'UPDATE')
+  and not has_column_privilege('cadence_command', 'private.sources', 'permitted_purposes', 'UPDATE')
+  and not has_column_privilege('cadence_command', 'private.sources', 'state', 'UPDATE')
+  and not has_column_privilege('cadence_command', 'private.sources', 'access_version', 'UPDATE')
+  and not has_column_privilege('cadence_command', 'private.sources', 'deleted_at', 'UPDATE')
+  and not has_column_privilege('cadence_command', 'private.sources', 'state', 'INSERT')
+  and not has_column_privilege('cadence_command', 'private.sources', 'access_version', 'INSERT')
+  and not has_column_privilege('cadence_command', 'private.sources', 'deleted_at', 'INSERT'),
+  'source commands cannot bypass sharing, erasure or lifecycle controls'
+);
+select ok(
+  not has_table_privilege('cadence_command', 'private.erasure_ledger', 'UPDATE')
+  and has_column_privilege('cadence_command', 'private.erasure_ledger', 'reason_code', 'INSERT')
+  and not has_column_privilege('cadence_command', 'private.erasure_ledger', 'state', 'INSERT')
+  and not has_column_privilege('cadence_command', 'private.erasure_ledger', 'completed_at', 'INSERT'),
+  'commands can request erasure but cannot set its progress or claim completion'
 );
 
 set local role cadence_command;

@@ -115,7 +115,7 @@ create table private.erasure_ledger (
   id uuid primary key default gen_random_uuid(),
   workspace_id uuid not null references private.workspaces(id) on delete restrict,
   subject_user_id uuid not null references private.app_users(id) on delete restrict,
-  state text not null check (state in ('pending', 'in_progress', 'complete', 'blocked')),
+  state text not null default 'pending' check (state in ('pending', 'in_progress', 'complete', 'blocked')),
   reason_code text not null check (length(reason_code) between 1 and 80),
   requested_at timestamptz not null default now(),
   completed_at timestamptz,
@@ -336,7 +336,12 @@ grant select on private.app_users, private.workspaces, private.workspace_members
 grant select on private.app_users, private.access_policy, private.pilot_identities
   to cadence_command;
 grant select on private.workspaces to cadence_command;
-grant select, insert, update on private.sources, private.erasure_ledger to cadence_command;
+grant select on private.sources, private.erasure_ledger to cadence_command;
+grant insert (workspace_id, creator_user_id, title, category, permitted_purposes)
+  on private.sources to cadence_command;
+grant update (title) on private.sources to cadence_command;
+grant insert (workspace_id, subject_user_id, reason_code)
+  on private.erasure_ledger to cadence_command;
 grant select on private.source_grants to cadence_command;
 grant select on private.workspace_memberships to cadence_command;
 

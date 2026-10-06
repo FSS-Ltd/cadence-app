@@ -35,10 +35,12 @@ to step 1.1.
 ## Database roles and pooled connections
 
 `cadence_command` and `cadence_publisher` are `NOLOGIN`, `NOBYPASSRLS`,
-non-superuser roles. The command role can read workspaces and update creator
-sources or the requesting actor's erasure record, but cannot change workspace
-identity, memberships, users, pilot policy, source grants or identity
-allow-lists. The publisher role has no table or schema access until approved
+non-superuser roles. The command role can read workspaces, create private
+sources and update only their title. It can create a pending erasure request for
+the requesting actor, but cannot change its progress or claim completion. It
+cannot change workspace identity, memberships, users, pilot policy, source
+grants, source purposes, source lifecycle state or identity allow-lists. The
+publisher role has no table or schema access until approved
 publication snapshots exist. Neither role has a credential in this repository.
 When deployed, a trusted server-only connection may assume the command role
 only after it verifies a Clerk session; never grant either role to `anon`,
