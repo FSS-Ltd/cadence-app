@@ -11,7 +11,7 @@ status_code="$(curl --silent --show-error --output "$response_file" --write-out 
   --header "Authorization: Bearer $anon_key" \
   --header 'Accept-Profile: private' \
   "$api_url/rest/v1/sources?select=id")"
-if [[ "$status_code" != "406" ]] || ! rg --quiet 'PGRST106' "$response_file"; then
+if [[ "$status_code" != "406" ]] || ! grep --quiet --fixed-strings 'PGRST106' "$response_file"; then
   echo "The private schema was not rejected by the Data API."
   exit 1
 fi
@@ -24,7 +24,7 @@ status_code="$(curl --silent --show-error --output "$response_file" --write-out 
   --header 'Content-Type: application/json' \
   --data '{}' \
   "$api_url/rest/v1/rpc/current_user_id")"
-if [[ "$status_code" != "406" ]] || ! rg --quiet 'PGRST106' "$response_file"; then
+if [[ "$status_code" != "406" ]] || ! grep --quiet --fixed-strings 'PGRST106' "$response_file"; then
   echo "The private RPC schema was not rejected by the Data API."
   exit 1
 fi
@@ -36,7 +36,7 @@ status_code="$(curl --silent --show-error --output "$response_file" --write-out 
   --header 'Content-Type: application/json' \
   --data '{"prefix":"","limit":1,"offset":0}' \
   "$api_url/storage/v1/object/list/cadence-private")"
-if [[ "$status_code" == "200" ]] && ! rg --quiet '^\s*\[\s*\]\s*$' "$response_file"; then
+if [[ "$status_code" == "200" ]] && ! grep --quiet --extended-regexp '^[[:space:]]*\[[[:space:]]*\][[:space:]]*$' "$response_file"; then
   echo "The private Storage bucket returned objects to an unauthenticated list request."
   exit 1
 fi
