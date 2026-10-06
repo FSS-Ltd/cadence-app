@@ -13,8 +13,8 @@ grant cadence_command to postgres;
 create schema private;
 revoke all on schema private from public, anon, authenticated, service_role;
 grant usage on schema private to authenticated, cadence_command;
-grant usage on schema auth to cadence_command;
-grant execute on function auth.jwt() to cadence_command;
+grant usage on schema auth to authenticated, cadence_command;
+grant execute on function auth.jwt() to authenticated, cadence_command;
 
 create type private.workspace_role as enum ('owner', 'admin', 'editor', 'publisher', 'viewer');
 create type private.source_state as enum ('private', 'shared', 'revoked', 'erasure_pending', 'deleted');
