@@ -1,6 +1,9 @@
 BEGIN;
 SELECT plan(29);
 
+-- Keep pgTAP assertions callable while tests assume the least-privilege role.
+GRANT USAGE ON SCHEMA extensions TO cadence_command;
+
 insert into private.app_users (id, clerk_subject_id) values
   ('10000000-0000-4000-8000-000000000001', 'synthetic-clerk-owner'),
   ('10000000-0000-4000-8000-000000000002', 'synthetic-clerk-peer'),
