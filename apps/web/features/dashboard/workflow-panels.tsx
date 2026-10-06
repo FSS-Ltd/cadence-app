@@ -14,7 +14,7 @@ export function NextStepsPanel() {
       </div>
       <ul className="next-step-list">
         <li className="next-step-item">
-          <span className="step-marker step-marker-purple" aria-hidden="true">
+          <span className="step-marker step-marker-accent" aria-hidden="true">
             1
           </span>
           <div>
@@ -28,7 +28,7 @@ export function NextStepsPanel() {
           </Link>
         </li>
         <li className="next-step-item">
-          <span className="step-marker step-marker-pink" aria-hidden="true">
+          <span className="step-marker step-marker-muted" aria-hidden="true">
             2
           </span>
           <div>

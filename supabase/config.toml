@@ -27,8 +27,3 @@ enabled = true
 enable_signup = false
 enable_anonymous_sign_ins = false
 enable_manual_linking = false
-
-[auth.third_party.clerk]
-enabled = true
-# Replace with the Clerk issuer for each isolated environment before using it.
-domain = "example.clerk.accounts.dev"

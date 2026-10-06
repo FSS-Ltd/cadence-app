@@ -33,14 +33,10 @@
 }
 
 .auth-brand-mark {
-  display: grid;
-  width: 2rem;
-  aspect-ratio: 1;
-  place-items: center;
-  border-radius: 0.7rem;
-  background: var(--color-action);
-  color: #fff;
-  font-size: 1rem;
+  display: block;
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: 0 0 auto;
 }
 
 .auth-card {
@@ -106,6 +102,10 @@
   min-height: 2.875rem;
   border-radius: var(--radius-md);
   font: inherit;
+}
+
+.clerk-auth-primary-button {
+  color: var(--color-brand-charcoal);
 }
 
 .clerk-auth-input {

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
+import { BrandMark } from "@/components/brand-mark";
 import {
   mobileNavigation,
   primaryNavigation,
@@ -77,9 +78,7 @@ export function WorkspaceHeader() {
     <header className="workspace-header">
       <div className="header-inner">
         <Link className="brand-lockup" href="/" aria-label="Cadence home">
-          <span className="brand-mark" aria-hidden="true">
-            C
-          </span>
+          <BrandMark className="brand-mark" />
           <span>Cadence</span>
         </Link>
 

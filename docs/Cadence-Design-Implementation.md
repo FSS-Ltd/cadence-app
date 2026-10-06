@@ -37,9 +37,12 @@ visual reference when that step begins.
 ## Step 1.1 mapping
 
 The sign-in page is a custom Cadence screen informed by the Stitch S05 brand
-playbook and current project theme: Sora headings, Inter controls, the existing
-purple action color, light/dark surface tokens, eight-pixel control rounding,
-16-pixel panels and compact 4/8/12/16/24 spacing. Clerk's sign-in component
+playbook: Sora headings, Inter controls, the owner-supplied Tangerine
+(`#FB923C`), Charcoal (`#0B0D12`), Ivory (`#F9F6F1`) and Slate (`#94A3BB`)
+palette, light/dark surface tokens, eight-pixel control rounding, 16-pixel
+panels and compact 4/8/12/16/24 spacing. The original multicolour Cadence C
+mark retains its supplied gradient. Tangerine actions use charcoal text, and
+Slate-derived surfaces/text are tuned for contrast. Clerk's sign-in component
 handles credentials and MFA challenges inside that shell. The page exposes the
 invitation-only and private-by-default expectations without implying that a
 workspace was loaded. Account security settings use Clerk's own security
@@ -47,7 +50,8 @@ controls, with an application guard that permits only an authenticated,
 verified member (or an eligible member completing required MFA).
 
 There is no dedicated Stitch sign-in screen. The custom screen therefore uses
-the existing Stitch brand system rather than inventing a new visual direction.
+the existing Stitch brand system and the owner's replacement UI palette rather
+than inventing a new visual direction.
 Keep all authentication pages responsive, keyboard-accessible, no-store and
 content-free. The Clerk appearance is reviewed against the live screen when
 environment credentials are configured; CI uses the safe unconfigured state.

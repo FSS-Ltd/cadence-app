@@ -1,6 +1,7 @@
 import { UserProfile } from "@clerk/nextjs";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { BrandMark } from "@/components/brand-mark";
 import { getWorkspaceAccess } from "@/lib/auth/access";
 
 export const dynamic = "force-dynamic";
@@ -16,9 +17,7 @@ export default async function SecuritySettingsPage() {
     <main className="auth-page" id="main-content">
       <div className="security-layout">
         <Link className="auth-brand-lockup" href="/">
-          <span className="auth-brand-mark" aria-hidden="true">
-            C
-          </span>
+          <BrandMark className="auth-brand-mark" />
           <span>Cadence</span>
         </Link>
         <section className="security-intro" aria-labelledby="security-title">

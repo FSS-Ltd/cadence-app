@@ -1,13 +1,12 @@
 import Link from "next/link";
+import { BrandMark } from "@/components/brand-mark";
 
 export default function AccessDeniedPage() {
   return (
     <main className="auth-page" id="main-content">
       <section className="auth-card denied-page" aria-labelledby="denied-title">
         <div className="auth-brand-lockup">
-          <span className="auth-brand-mark" aria-hidden="true">
-            C
-          </span>
+          <BrandMark className="auth-brand-mark" />
           <span>Cadence</span>
         </div>
         <p className="auth-eyebrow">Workspace access</p>

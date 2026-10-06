@@ -14,8 +14,10 @@ environment. The repository contains names only in `apps/web/.env.example`.
   Postgres keeps only a verified/unverified boolean, not an email address.
 - Configure Clerk's supported Supabase third-party integration so session
   tokens include `role: authenticated`; register the matching Clerk issuer in
-  each Supabase environment. The local CLI config uses an example issuer and
-  must be replaced before local Data API authentication.
+  each isolated Supabase environment. The local CLI stack intentionally has no
+  example issuer because Supabase fetches the issuer's discovery document at
+  startup; add the real environment-specific issuer only when that Clerk tenant
+  exists.
 - Create a signed Clerk webhook for `user.created`, `user.updated` and
   `user.deleted`; set its signing secret in the server environment. The route
   verifies Svix signatures/timestamps, records delivery IDs idempotently and

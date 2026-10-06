@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SignIn } from "@clerk/nextjs";
+import { BrandMark } from "@/components/brand-mark";
 
 type SignInScreenProps = Readonly<{ configured: boolean }>;
 
@@ -8,9 +9,7 @@ export function SignInScreen({ configured }: SignInScreenProps) {
     <main className="auth-page" id="main-content">
       <div className="auth-layout">
         <div className="auth-brand-lockup">
-          <span className="auth-brand-mark" aria-hidden="true">
-            C
-          </span>
+          <BrandMark className="auth-brand-mark" />
           <span>Cadence</span>
         </div>
 

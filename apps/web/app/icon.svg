@@ -1,4 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-  <rect width="48" height="48" rx="13" fill="#6D28D9"/>
-  <text x="24" y="34" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="32" font-weight="700" text-anchor="middle">C</text>
+  <defs>
+    <linearGradient id="cadence-mark-gradient" x1="6" y1="18" x2="42" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6D28D9"/>
+      <stop offset=".52" stop-color="#F43F5E"/>
+      <stop offset="1" stop-color="#FB923C"/>
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="13" fill="#0B0D12"/>
+  <path d="M39 12C33.7 6.2 26.5 4.2 19.2 6.3 10.4 8.9 5.4 15.9 5.8 24.6c.4 8.3 5.7 14.8 13.7 16.4 7.8 1.6 15.5-2.4 19.4-9.8" stroke="url(#cadence-mark-gradient)" stroke-width="9" stroke-linecap="butt"/>
 </svg>
