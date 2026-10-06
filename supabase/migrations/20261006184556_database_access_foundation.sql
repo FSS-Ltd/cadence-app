@@ -13,8 +13,6 @@ grant cadence_command to postgres;
 create schema private;
 revoke all on schema private from public, anon, authenticated, service_role;
 grant usage on schema private to authenticated, cadence_command;
-grant usage on schema auth to authenticated, cadence_command;
-grant execute on function auth.jwt() to authenticated, cadence_command;
 
 create type private.workspace_role as enum ('owner', 'admin', 'editor', 'publisher', 'viewer');
 create type private.source_state as enum ('private', 'shared', 'revoked', 'erasure_pending', 'deleted');
@@ -156,11 +154,13 @@ create constraint trigger pilot_policy_count_guard
 
 -- No policy row or pilot identity is seeded. Unknown or unconfigured auth modes
 -- fail closed, and a workspace owner gains no implicit source visibility.
+-- These fixed-path definer helpers expose only derived claim data, keeping the
+-- auth schema itself unavailable to application roles.
 create function private.current_clerk_subject()
 returns text
 language sql
 stable
-security invoker
+security definer
 set search_path = pg_catalog
 as $$
   select nullif(auth.jwt() ->> 'sub', '')
@@ -230,7 +230,7 @@ create function private.mfa_recent()
 returns boolean
 language sql
 stable
-security invoker
+security definer
 set search_path = pg_catalog
 as $$
   select case
