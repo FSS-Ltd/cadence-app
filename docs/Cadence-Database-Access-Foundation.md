@@ -43,6 +43,8 @@ publication snapshots exist. Neither role has a credential in this repository.
 When deployed, a trusted server-only connection may assume the command role
 only after it verifies a Clerk session; never grant either role to `anon`,
 `authenticated` or Supabase `service_role`.
+The built-in `postgres` administrative role can assume `cadence_command` for
+database tests and operations; it is not a runtime application credential.
 
 Commands set the verified Clerk JWT claims, `app.actor_id` and, for source
 reads, `app.access_purpose` with transaction-local `set_config(..., true)` in

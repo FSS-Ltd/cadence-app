@@ -6,6 +6,9 @@ begin;
 
 create role cadence_command nologin nosuperuser nocreatedb nocreaterole noinherit nobypassrls;
 create role cadence_publisher nologin nosuperuser nocreatedb nocreaterole noinherit nobypassrls;
+-- Supabase's local pgTAP runner steps down to postgres; application logins are
+-- not members and must receive separately provisioned, least-privilege access.
+grant cadence_command to postgres;
 
 create schema private;
 revoke all on schema private from public, anon, authenticated, service_role;
