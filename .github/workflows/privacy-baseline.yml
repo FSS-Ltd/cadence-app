@@ -9,6 +9,37 @@ permissions:
   contents: read
 
 jobs:
+  web:
+    name: Web application checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+          run_install: false
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Lint, type-check and build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: |
+          pnpm format:check
+          pnpm lint
+          pnpm typecheck
+          pnpm build
+
   documentation:
     name: Documentation and plan gates
     runs-on: ubuntu-latest
