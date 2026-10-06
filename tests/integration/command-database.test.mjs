@@ -44,6 +44,22 @@ test("restricted driver commits, rolls back and clears pooled identity context",
         { code: "SERVICE_UNAVAILABLE" },
       );
     });
+    await t.test(
+      "indirect privileged role membership fails closed",
+      async () => {
+        await root`create role cadence_driver_privileged nologin bypassrls`;
+        try {
+          await root`grant cadence_driver_privileged to cadence_driver_test`;
+          await assert.rejects(
+            withCommandTransaction(client, identity(), async () => null),
+            { code: "SERVICE_UNAVAILABLE" },
+          );
+        } finally {
+          await root`revoke cadence_driver_privileged from cadence_driver_test`;
+          await root`drop role cadence_driver_privileged`;
+        }
+      },
+    );
     let invitation;
     const command = {
       action: "invitation.issue",

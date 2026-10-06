@@ -2,6 +2,7 @@ import postgres from "postgres";
 import type { Sql, TransactionSql } from "postgres";
 import { workspaceIdSchema } from "@cadence/contracts/access";
 import { AccessError } from "@cadence/contracts/access-errors";
+import type { Database } from "./database.types.ts";
 
 export type CommandIdentity = Readonly<{
   subject: string;
@@ -66,7 +67,9 @@ export async function withCommandTransaction(
       // clears both identity values on commit and rollback, including pooled use.
       await transaction`select set_config('request.jwt.claims', ${JSON.stringify({ sub: identity.subject, sid: identity.sessionId, fva: identity.factorAges })}, true)`;
       const [actor] = await transaction<
-        { id: unknown }[]
+        {
+          id: Database["private"]["Functions"]["resolve_command_actor"]["Returns"];
+        }[]
       >`select private.resolve_command_actor() as id`;
       const parsed = workspaceIdSchema.safeParse(actor?.id);
       if (!parsed.success) throw new AccessError("AUTH_REQUIRED");
