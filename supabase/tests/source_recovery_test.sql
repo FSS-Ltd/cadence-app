@@ -1,0 +1,28 @@
+begin;
+select plan(13);
+\ir fixtures/captures.sql.inc
+set local role cadence_command;
+select pg_temp.as_actor(3);
+select private.create_private_capture('20000000-0000-4000-8000-000000000001',gen_random_uuid(),null,'Synthetic orphan','Synthetic orphan content','personal_draft',array['editorial_reuse','excerpt_release']::private.source_purpose[],false,true,null);
+select pg_temp.as_actor(1);
+select throws_ok($$select private.recover_orphaned_source('20000000-0000-4000-8000-000000000001',gen_random_uuid(),pg_temp.capture_id('Synthetic orphan'),1,1,'10000000-0000-4000-8000-000000000002','creator_departed')$$,'P0001','SOURCE_ACCESS_DENIED','active creator capture is not recoverable');
+select private.change_workspace_member('20000000-0000-4000-8000-000000000001',gen_random_uuid(),'10000000-0000-4000-8000-000000000003',1,null);
+select throws_ok($$select private.read_source_revision('20000000-0000-4000-8000-000000000001',pg_temp.capture_id('Synthetic orphan'),1,'editorial_reuse')$$,'P0001','SOURCE_ACCESS_DENIED','removing creator does not automatically disclose private data');
+select throws_ok($$select private.recover_orphaned_source('20000000-0000-4000-8000-000000000001',gen_random_uuid(),pg_temp.capture_id('Synthetic orphan'),1,1,'10000000-0000-4000-8000-000000000002','creator_disabled')$$,'P0001','SOURCE_ACCESS_DENIED','recovery reason must match demonstrated orphan condition');
+select throws_ok($$select private.recover_orphaned_source('20000000-0000-4000-8000-000000000001',gen_random_uuid(),pg_temp.capture_id('Synthetic orphan'),1,1,'10000000-0000-4000-8000-000000000008','creator_departed')$$,'P0001','SOURCE_ACCESS_DENIED','custodian cannot belong to another workspace');
+select set_config('request.jwt.claims','{"sub":"synthetic-access-1","fva":[11,1]}',true);
+select throws_ok($$select private.recover_orphaned_source('20000000-0000-4000-8000-000000000001',gen_random_uuid(),pg_temp.capture_id('Synthetic orphan'),1,1,'10000000-0000-4000-8000-000000000002','creator_departed')$$,'P0001','AUTHENTICATION_TOO_OLD','recovery requires fresh authentication');
+select pg_temp.as_actor(1);
+select lives_ok($$select private.recover_orphaned_source('20000000-0000-4000-8000-000000000001','90000000-0000-4000-8000-000000000031',pg_temp.capture_id('Synthetic orphan'),1,1,'10000000-0000-4000-8000-000000000002','creator_departed')$$,'explicit audited recovery assigns selected custodian');
+select is(private.recover_orphaned_source('20000000-0000-4000-8000-000000000001','90000000-0000-4000-8000-000000000031',pg_temp.capture_id('Synthetic orphan'),1,1,'10000000-0000-4000-8000-000000000002','creator_departed')->>'replayed','true','recovery retry is idempotent');
+select throws_ok($$select private.read_source_revision('20000000-0000-4000-8000-000000000001',pg_temp.capture_id('Synthetic orphan'),1,'editorial_reuse')$$,'P0001','SOURCE_ACCESS_DENIED','recovering owner gains no read access when another custodian was chosen');
+select pg_temp.as_actor(2);
+select is(private.read_source_revision('20000000-0000-4000-8000-000000000001',pg_temp.capture_id('Synthetic orphan'),1,'editorial_reuse')->>'body','Synthetic orphan content','chosen custodian alone can inspect recovered content');
+select pg_temp.as_actor(3);
+select throws_ok($$select private.read_source_revision('20000000-0000-4000-8000-000000000001',pg_temp.capture_id('Synthetic orphan'),1,'editorial_reuse')$$,'P0001','ACCESS_DENIED','removed creator remains blocked');
+reset role;
+select is((select creator_user_id::text from private.sources where title = 'Synthetic orphan'),'10000000-0000-4000-8000-000000000003','original capturer is retained unchanged');
+select is((select count(*)::integer from private.source_recoveries where source_id = pg_temp.capture_id('Synthetic orphan') and custodian_user_id = '10000000-0000-4000-8000-000000000002' and reason_code = 'creator_departed'),1,'audit records custodian and matching bounded reason once');
+select ok(not exists(select 1 from private.source_recoveries where row_to_json(source_recoveries)::text like '%orphan content%'),'recovery audit excludes source text');
+select * from finish();
+rollback;

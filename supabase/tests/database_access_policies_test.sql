@@ -54,7 +54,7 @@ select ok(
   'command cannot mutate memberships, auth policy, identity mappings, grants or workspaces'
 );
 select ok(
-  has_column_privilege('cadence_command', 'private.sources', 'title', 'UPDATE')
+  not has_column_privilege('cadence_command', 'private.sources', 'title', 'UPDATE')
   and not has_column_privilege('cadence_command', 'private.sources', 'permitted_purposes', 'UPDATE')
   and not has_column_privilege('cadence_command', 'private.sources', 'state', 'UPDATE')
   and not has_column_privilege('cadence_command', 'private.sources', 'access_version', 'UPDATE')
@@ -66,10 +66,10 @@ select ok(
 );
 select ok(
   not has_table_privilege('cadence_command', 'private.erasure_ledger', 'UPDATE')
-  and has_column_privilege('cadence_command', 'private.erasure_ledger', 'reason_code', 'INSERT')
+  and not has_column_privilege('cadence_command', 'private.erasure_ledger', 'reason_code', 'INSERT')
   and not has_column_privilege('cadence_command', 'private.erasure_ledger', 'state', 'INSERT')
   and not has_column_privilege('cadence_command', 'private.erasure_ledger', 'completed_at', 'INSERT'),
-  'commands can request erasure but cannot set its progress or claim completion'
+  'erasure requires the audited function and cannot be inserted or completed directly'
 );
 
 set local role cadence_command;
@@ -94,6 +94,9 @@ select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-outsider","role
 select ok((select count(*) from private.workspaces) = 0, 'unlisted identity cannot read a workspace');
 
 reset role;
+insert into private.source_revisions(workspace_id,source_id,version,title,body,authored_by_user_id)
+values ('20000000-0000-4000-8000-000000000001','40000000-0000-4000-8000-000000000001',1,
+  'Synthetic private draft','Synthetic test text','10000000-0000-4000-8000-000000000001');
 insert into private.source_grants (
   id, workspace_id, source_id, recipient_user_id, purpose, granted_by_user_id
 ) values (
