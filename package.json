@@ -9,13 +9,17 @@
     "dev": "pnpm --filter @cadence/web dev",
     "build": "pnpm --filter @cadence/web build",
     "start": "pnpm --filter @cadence/web start",
-    "lint": "pnpm --filter @cadence/web lint",
-    "typecheck": "pnpm --filter @cadence/web typecheck",
-    "test": "pnpm --filter @cadence/web test",
-    "format": "prettier --write \"apps/web/**/*.{js,mjs,ts,tsx,css,json}\" \"package.json\" \"pnpm-workspace.yaml\" \".github/workflows/privacy-baseline.yml\"",
-    "format:check": "prettier --check \"apps/web/**/*.{js,mjs,ts,tsx,css,json}\" \"package.json\" \"pnpm-workspace.yaml\" \".github/workflows/privacy-baseline.yml\""
+    "lint": "eslint apps/web packages tests",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "format": "prettier --write \"apps/web/**/*.{js,mjs,ts,tsx,css,json}\" \"packages/**/*.{ts,mjs,json}\" \"eslint.config.mjs\" \"package.json\" \"pnpm-workspace.yaml\" \".github/workflows/privacy-baseline.yml\" \"tests/**/*.mjs\"",
+    "format:check": "prettier --check \"apps/web/**/*.{js,mjs,ts,tsx,css,json}\" \"packages/**/*.{ts,mjs,json}\" \"eslint.config.mjs\" \"package.json\" \"pnpm-workspace.yaml\" \".github/workflows/privacy-baseline.yml\" \"tests/**/*.mjs\""
   },
   "devDependencies": {
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^16.1.0",
+    "typescript": "^5.9.0",
+    "@types/node": "^22.0.0"
   }
 }

@@ -50,6 +50,18 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Set up pnpm for database integration tests
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+          run_install: false
+      - name: Set up Node.js for database integration tests
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install integration dependencies
+        run: pnpm install --frozen-lockfile
       - name: Validate numbered privacy gates
         run: node scripts/verify-build-plan.mjs
       - name: Start isolated Supabase test stack
@@ -66,6 +78,20 @@ jobs:
           set +a
           bash scripts/test-data-api-boundary.sh
           bash scripts/test-transaction-context.sh
+          bash scripts/test-access-concurrency.sh
+          node --experimental-strip-types --test tests/integration/command-database.test.mjs
+      - name: Generate database types
+        run: |
+          npx --yes supabase@2.120.0 gen types --local --schema private,auth_api > "$RUNNER_TEMP/database.types.ts"
+          pnpm exec prettier --write "$RUNNER_TEMP/database.types.ts"
+      - name: Upload generated database types
+        uses: actions/upload-artifact@v7
+        with:
+          name: database-types
+          path: ${{ runner.temp }}/database.types.ts
+          retention-days: 1
+      - name: Verify checked-in database types
+        run: cmp "$RUNNER_TEMP/database.types.ts" packages/database/src/database.types.ts
       - name: Check whitespace errors
         run: |
           if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then

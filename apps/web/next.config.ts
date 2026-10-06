@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  transpilePackages: ["@cadence/contracts", "@cadence/database"],
   async headers() {
     return [
       {

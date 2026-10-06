@@ -1,0 +1,17 @@
+{
+  "name": "@cadence/database",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "postgres": "^3.4.7",
+    "@cadence/contracts": "workspace:*"
+  }
+}
