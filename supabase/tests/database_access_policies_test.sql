@@ -1,5 +1,5 @@
 BEGIN;
-SELECT plan(34);
+SELECT plan(40);
 
 -- Keep pgTAP assertions callable while tests assume the least-privilege role.
 GRANT USAGE ON SCHEMA extensions TO cadence_command;
@@ -156,6 +156,19 @@ select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"
 select ok((select count(*) from private.workspaces) = 0, 'MFA policy rejects a first factor older than ten minutes');
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[1,-1]}', true);
 select ok((select count(*) from private.workspaces) = 0, 'MFA policy rejects a missing second factor');
+
+select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[1,999999999999999999999999999]}', true);
+select ok((select count(*) from private.workspaces) = 0, 'MFA policy safely denies overflowing ages');
+select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[1,"1"]}', true);
+select ok((select count(*) from private.workspaces) = 0, 'MFA policy safely denies string ages');
+select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":{"0":1,"1":1}}', true);
+select ok((select count(*) from private.workspaces) = 0, 'MFA policy safely denies object ages');
+select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[1,1,1]}', true);
+select ok((select count(*) from private.workspaces) = 0, 'MFA policy safely denies extra ages');
+select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[]}', true);
+select ok((select count(*) from private.workspaces) = 0, 'MFA policy safely denies missing ages');
+select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":null}', true);
+select ok((select count(*) from private.workspaces) = 0, 'MFA policy safely denies null ages');
 
 reset role;
 delete from private.access_policy;
