@@ -2,24 +2,24 @@ begin;
 select plan(15);
 
 select ok(
-  has_function_privilege('service_role', 'auth_api.process_clerk_identity_event(text,text,text,boolean,timestamp with time zone)', 'EXECUTE')
-  and not has_function_privilege('authenticated', 'auth_api.process_clerk_identity_event(text,text,text,boolean,timestamp with time zone)', 'EXECUTE'),
+  has_function_privilege('service_role', 'auth_api.process_clerk_identity_event(text,text,text,boolean,timestamp with time zone,bigint,bigint)', 'EXECUTE')
+  and not has_function_privilege('authenticated', 'auth_api.process_clerk_identity_event(text,text,text,boolean,timestamp with time zone,bigint,bigint)', 'EXECUTE'),
   'only the webhook service role can process identity events'
 );
 
 set local role service_role;
 select is(
-  auth_api.process_clerk_identity_event('evt-created', 'user.created', 'synthetic-new-user', true, now()),
+  auth_api.process_clerk_identity_event('evt-created', 'user.created', 'synthetic-new-user', true, now(), 1000, 1000),
   'mapped',
   'verified identity is mapped without copying profile fields'
 );
 select is(
-  auth_api.process_clerk_identity_event('evt-created', 'user.created', 'synthetic-new-user', true, now()),
+  auth_api.process_clerk_identity_event('evt-created', 'user.created', 'synthetic-new-user', true, now(), 1000, 1000),
   'duplicate',
   'replayed delivery is idempotent'
 );
 select is(
-  auth_api.process_clerk_identity_event('evt-unverified', 'user.updated', 'synthetic-new-user', false, now()),
+  auth_api.process_clerk_identity_event('evt-unverified', 'user.updated', 'synthetic-new-user', false, now(), 2000, 2000),
   'mapped',
   'unverified email state is recorded'
 );
@@ -36,12 +36,12 @@ reset role;
 
 set local role service_role;
 select is(
-  auth_api.process_clerk_identity_event('evt-deleted', 'user.deleted', 'synthetic-new-user', false, now()),
+  auth_api.process_clerk_identity_event('evt-deleted', 'user.deleted', 'synthetic-new-user', false, now(), 2000, 2000),
   'deleted',
   'deletion disables the internal identity'
 );
 select is(
-  auth_api.process_clerk_identity_event('evt-late-create', 'user.created', 'synthetic-new-user', true, now()),
+  auth_api.process_clerk_identity_event('evt-late-create', 'user.created', 'synthetic-new-user', true, now(), 1000, 1000),
   'deleted_identity_ignored',
   'a delayed create cannot resurrect a deleted identity'
 );
@@ -68,7 +68,7 @@ select ok(
   'identity mapping stores no direct contact details'
 );
 select throws_ok(
-  $$select auth_api.process_clerk_identity_event('evt-stale', 'user.created', 'synthetic-stale', true, now() - interval '6 minutes')$$,
+  $$select auth_api.process_clerk_identity_event('evt-stale', 'user.created', 'synthetic-stale', true, now() - interval '6 minutes', 1000, 1000)$$,
   '22023', null, 'stale signed event timestamp is rejected'
 );
 

@@ -12,7 +12,7 @@ function parseFactorVerificationAge(
   const factorAges = claims.fva;
   if (
     !Array.isArray(factorAges) ||
-    factorAges.length < 2 ||
+    factorAges.length !== 2 ||
     typeof factorAges[0] !== "number" ||
     typeof factorAges[1] !== "number" ||
     !Number.isInteger(factorAges[0]) ||
