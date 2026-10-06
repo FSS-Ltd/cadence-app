@@ -10,6 +10,7 @@ Collected on 5 October 2026. This folder contains the product planning, engineer
 4. [Privacy architecture](Cadence-Privacy-Architecture.md) — identity, data flows, private-source access, retention, deletion, backup/recovery and each step's privacy acceptance.
 5. [Delivery evidence](Cadence-Delivery-Evidence.md) — current PR, CI, review, merge evidence and blocker for the active build step.
 6. [Stitch design implementation record](Cadence-Design-Implementation.md) — authoritative UI/UX references and privacy-safe implementation mapping.
+7. [Authentication setup](Cadence-Authentication-Setup.md) — Clerk/Supabase environment setup, webhook handling and pilot provisioning boundaries.
 
 ## Implemented foundation records
 

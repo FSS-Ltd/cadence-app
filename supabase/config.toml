@@ -2,7 +2,7 @@ project_id = "cadence_app"
 
 [api]
 enabled = true
-schemas = ["public", "graphql_public"]
+schemas = ["public", "graphql_public", "auth_api"]
 extra_search_path = ["public", "extensions"]
 max_rows = 1000
 auto_expose_new_tables = false
@@ -27,3 +27,8 @@ enabled = true
 enable_signup = false
 enable_anonymous_sign_ins = false
 enable_manual_linking = false
+
+[auth.third_party.clerk]
+enabled = true
+# Replace with the Clerk issuer for each isolated environment before using it.
+domain = "example.clerk.accounts.dev"
