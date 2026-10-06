@@ -6,9 +6,7 @@ begin;
 create extension if not exists pgcrypto with schema extensions;
 
 alter table private.app_users
-  add column email_verified boolean not null default false,
-  add column clerk_updated_at bigint check (clerk_updated_at >= 0),
-  add column clerk_event_timestamp bigint check (clerk_event_timestamp >= 0);
+  add column email_verified boolean not null default false;
 
 create or replace function private.current_user_id()
 returns uuid
@@ -33,15 +31,15 @@ stable
 security definer
 set search_path = pg_catalog
 as $$
-  select coalesce(
-    case when jsonb_typeof(auth.jwt() -> 'fva') = 'array'
-      then jsonb_array_length(auth.jwt() -> 'fva') = 2 else false end
-    and jsonb_typeof(auth.jwt() -> 'fva' -> 0) = 'number'
-    and jsonb_typeof(auth.jwt() -> 'fva' -> 1) = 'number'
-    and (auth.jwt() -> 'fva' ->> 0) ~ '^(10|[0-9])$'
-    and (auth.jwt() -> 'fva' ->> 1) ~ '^(10|[0-9])$',
-    false
-  )
+  select case
+    when jsonb_typeof(auth.jwt() -> 'fva') = 'array'
+      and (auth.jwt() -> 'fva' ->> 0) ~ '^[0-9]+$'
+      and (auth.jwt() -> 'fva' ->> 1) ~ '^[0-9]+$'
+      and (auth.jwt() -> 'fva' ->> 0)::integer between 0 and 10
+      and (auth.jwt() -> 'fva' ->> 1)::integer between 0 and 10
+      then true
+    else false
+  end
 $$;
 
 create table private.identity_webhook_receipts (
@@ -71,9 +69,7 @@ create function private.apply_clerk_identity_event(
   p_event_type text,
   p_clerk_subject_id text,
   p_email_verified boolean,
-  p_signed_delivery_at timestamptz,
-  p_updated_at bigint,
-  p_event_timestamp bigint
+  p_signed_delivery_at timestamptz
 )
 returns text
 language plpgsql
@@ -85,13 +81,9 @@ declare
   subject_hash bytea;
 begin
   if p_event_id is null or length(p_event_id) not between 1 and 255
-     or p_event_type is null or p_event_type not in ('user.created', 'user.updated', 'user.deleted')
+     or p_event_type not in ('user.created', 'user.updated', 'user.deleted')
      or p_clerk_subject_id is null or length(p_clerk_subject_id) not between 1 and 255
      or p_email_verified is null
-     or p_updated_at is null or p_updated_at < 0
-     or p_event_timestamp is null or p_event_timestamp < 0
-     or p_updated_at > extract(epoch from now() + interval '1 minute') * 1000
-     or p_event_timestamp > extract(epoch from now() + interval '1 minute') * 1000
      or p_signed_delivery_at is null
      or p_signed_delivery_at < now() - interval '5 minutes'
      or p_signed_delivery_at > now() + interval '1 minute' then
@@ -133,29 +125,13 @@ begin
     return 'deleted_identity_ignored';
   end if;
 
-  -- Delivery timestamps change on retry. Order by the signed payload's object
-  -- revision, then event timestamp for changes that share an object revision.
-  -- Conflicting states at the exact same version deny verification in either
-  -- arrival order. Only a strictly newer version may restore verified access.
-  insert into private.app_users (
-    clerk_subject_id, email_verified, clerk_updated_at, clerk_event_timestamp
-  ) values (p_clerk_subject_id, p_email_verified, p_updated_at, p_event_timestamp)
+  insert into private.app_users (clerk_subject_id, email_verified)
+  values (p_clerk_subject_id, p_email_verified)
   on conflict (clerk_subject_id) do update
-    set email_verified = case
-          when (private.app_users.clerk_updated_at, private.app_users.clerk_event_timestamp)
-               = (excluded.clerk_updated_at, excluded.clerk_event_timestamp)
-            then private.app_users.email_verified and excluded.email_verified
-          else excluded.email_verified
-        end,
-        clerk_updated_at = excluded.clerk_updated_at,
-        clerk_event_timestamp = excluded.clerk_event_timestamp
-    where private.app_users.disabled_at is null
-      and (private.app_users.clerk_updated_at is null
-           or (private.app_users.clerk_updated_at, private.app_users.clerk_event_timestamp)
-              <= (excluded.clerk_updated_at, excluded.clerk_event_timestamp));
-  get diagnostics inserted_rows = row_count;
+    set email_verified = excluded.email_verified
+    where private.app_users.disabled_at is null;
 
-  return case when inserted_rows = 0 then 'stale_or_disabled_identity_ignored' else 'mapped' end;
+  return 'mapped';
 end
 $$;
 
@@ -198,9 +174,9 @@ $$;
 revoke all on function private.security_settings_access() from public, anon, authenticated, service_role;
 grant execute on function private.security_settings_access() to authenticated;
 
-revoke all on function private.apply_clerk_identity_event(text, text, text, boolean, timestamptz, bigint, bigint)
+revoke all on function private.apply_clerk_identity_event(text, text, text, boolean, timestamptz)
   from public, anon, authenticated, service_role;
-grant execute on function private.apply_clerk_identity_event(text, text, text, boolean, timestamptz, bigint, bigint)
+grant execute on function private.apply_clerk_identity_event(text, text, text, boolean, timestamptz)
   to service_role;
 -- The HTTP caller can resolve the one function granted above but has no table
 -- privileges in the private schema.
@@ -250,9 +226,7 @@ create function auth_api.process_clerk_identity_event(
   p_event_type text,
   p_clerk_subject_id text,
   p_email_verified boolean,
-  p_signed_delivery_at timestamptz,
-  p_updated_at bigint,
-  p_event_timestamp bigint
+  p_signed_delivery_at timestamptz
 )
 returns text
 language sql
@@ -264,17 +238,15 @@ as $$
     p_event_type,
     p_clerk_subject_id,
     p_email_verified,
-    p_signed_delivery_at,
-    p_updated_at,
-    p_event_timestamp
+    p_signed_delivery_at
   )
 $$;
 
 revoke all on function auth_api.current_session_access() from public, anon;
-revoke all on function auth_api.process_clerk_identity_event(text, text, text, boolean, timestamptz, bigint, bigint)
+revoke all on function auth_api.process_clerk_identity_event(text, text, text, boolean, timestamptz)
   from public, anon, authenticated;
 grant execute on function auth_api.current_session_access() to authenticated;
-grant execute on function auth_api.process_clerk_identity_event(text, text, text, boolean, timestamptz, bigint, bigint)
+grant execute on function auth_api.process_clerk_identity_event(text, text, text, boolean, timestamptz)
   to service_role;
 
 commit;

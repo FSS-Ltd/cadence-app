@@ -47,7 +47,8 @@ not contain real identity IDs or seed an access policy. A missing or invalid
 policy denies access.
 
 The webhook's identity table contains an internal UUID, immutable Clerk subject,
-email-verification boolean, two source-version timestamps and disabled timestamp. It stores no email, name,
+email-verification boolean, two source-version timestamps and disabled timestamp.
+It stores no email, name,
 phone, Clerk payload, cookie, token, password or invitation. A deletion marker
 contains a one-way SHA-256 digest of the Clerk subject; a delayed create/update
 cannot re-enable it. Operational webhook receipts expire after 180 days.
@@ -63,7 +64,7 @@ runs real Postgres/RLS tests for delayed creates/updates, equal-version conflict
 delete-before-create, invalid event types, future source versions and malformed
 factor ages. Source versions follow [Clerk's ordering guidance](https://clerk.com/docs/guides/development/webhooks/overview).
 These scalar versions live with the identity mapping and follow its erasure
-lifecycle; no additional profile data is retained. The step 1.1 migration is
-still unmerged and has not been deployed to a live environment; reset disposable
-local databases after this migration revision. Deploy the updated RPC signature
-and webhook together when provisioning an environment.
+lifecycle; no additional profile data is retained. The follow-up migration adds the source-version columns and replaces the
+webhook RPC signature; the merged step 1.1 migration remains unchanged. Apply
+the migration and updated webhook together. Deliveries during a signature
+mismatch fail closed and must be retried after both changes are installed.
