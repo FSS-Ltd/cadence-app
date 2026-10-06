@@ -10,6 +10,10 @@ Collected on 5 October 2026. This folder contains the product planning, engineer
 4. [Privacy architecture](Cadence-Privacy-Architecture.md) — identity, data flows, private-source access, retention, deletion, backup/recovery and each step's privacy acceptance.
 5. [Delivery evidence](Cadence-Delivery-Evidence.md) — current PR, CI, review, merge evidence and blocker for the active build step.
 
+## Implemented foundation records
+
+- [Database and access foundation](Cadence-Database-Access-Foundation.md) — step 0.2 schema boundaries, roles, synthetic verification and deployment limits.
+
 The current requirements and phased plan govern implementation. The dated research records preserve evidence and earlier options; follow each document's status notes when an earlier assumption has been superseded.
 
 ## Current product specifications

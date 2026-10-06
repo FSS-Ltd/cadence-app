@@ -20,6 +20,20 @@ jobs:
           persist-credentials: false
       - name: Validate numbered privacy gates
         run: node scripts/verify-build-plan.mjs
+      - name: Start isolated Supabase test stack
+        run: npx --yes supabase@2.120.0 start --exclude studio,mailpit,edge-runtime,logflare,vector,supavisor
+      - name: Apply migrations and run database access tests
+        run: |
+          npx --yes supabase@2.120.0 db reset
+          npx --yes supabase@2.120.0 test db --local
+          npx --yes supabase@2.120.0 db lint --local --fail-on error
+          npx --yes supabase@2.120.0 db advisors --local --type security --fail-on error
+          npx --yes supabase@2.120.0 status --output env > "$RUNNER_TEMP/cadence-local-supabase.env"
+          set -a
+          source "$RUNNER_TEMP/cadence-local-supabase.env"
+          set +a
+          bash scripts/test-data-api-boundary.sh
+          bash scripts/test-transaction-context.sh
       - name: Check whitespace errors
         run: |
           if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
