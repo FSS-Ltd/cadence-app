@@ -1,20 +1,30 @@
 :root {
   color-scheme: light dark;
-  --color-paper: #f8f7fb;
-  --color-surface: #fff;
-  --color-muted: #f2eff8;
-  --color-line: #e8e5ee;
-  --color-text: #171923;
-  --color-subtle: #5c6070;
-  --color-accent: #6d28d9;
-  --color-action: #6d28d9;
-  --color-accent-soft: #f0eaff;
-  --color-pink: #b4234b;
-  --color-orange: #a84c08;
+  --color-brand-tangerine: #fb923c;
+  --color-brand-charcoal: #0b0d12;
+  --color-brand-ivory: #f9f6f1;
+  --color-brand-slate: #94a3bb;
+  --color-paper: var(--color-brand-ivory);
+  --color-surface: #fffdfb;
+  --color-muted: color-mix(
+    in srgb,
+    var(--color-brand-slate) 20%,
+    var(--color-brand-ivory)
+  );
+  --color-line: color-mix(
+    in srgb,
+    var(--color-brand-slate) 48%,
+    var(--color-brand-ivory)
+  );
+  --color-text: var(--color-brand-charcoal);
+  --color-subtle: #536073;
+  --color-accent: #99500b;
+  --color-action: var(--color-brand-tangerine);
+  --color-accent-soft: #fbe5ce;
   --color-success: #126c48;
   --color-success-soft: #e6f4ec;
-  --color-notice: #884300;
-  --color-notice-soft: #fff1df;
+  --color-notice: #714211;
+  --color-notice-soft: #fbe9d5;
   --font-ui:
     Inter, "Avenir Next", Avenir, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
@@ -30,21 +40,26 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-paper: #111318;
-    --color-surface: #1e1f25;
-    --color-muted: #282a2f;
-    --color-line: #4a4455;
-    --color-text: #e2e2e9;
-    --color-subtle: #ccc3d7;
-    --color-accent: #d3bbff;
-    --color-action: #6d28d9;
-    --color-accent-soft: #30213e;
-    --color-pink: #ffb2b7;
-    --color-orange: #ffb783;
+    --color-paper: var(--color-brand-charcoal);
+    --color-surface: #171a20;
+    --color-muted: color-mix(
+      in srgb,
+      var(--color-brand-slate) 18%,
+      var(--color-brand-charcoal)
+    );
+    --color-line: color-mix(
+      in srgb,
+      var(--color-brand-slate) 42%,
+      var(--color-brand-charcoal)
+    );
+    --color-text: var(--color-brand-ivory);
+    --color-subtle: #b9c2d0;
+    --color-accent: var(--color-brand-tangerine);
+    --color-accent-soft: #39291d;
     --color-success: #76d3a5;
     --color-success-soft: #183a2b;
-    --color-notice: #ffc298;
-    --color-notice-soft: #3b2c19;
+    --color-notice: #ffc47f;
+    --color-notice-soft: #3b2d20;
     --shadow-panel: 0 4px 20px -2px rgb(0 0 0 / 32%);
   }
 }

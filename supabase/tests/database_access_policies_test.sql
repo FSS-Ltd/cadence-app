@@ -1,13 +1,13 @@
 BEGIN;
-SELECT plan(31);
+SELECT plan(34);
 
 -- Keep pgTAP assertions callable while tests assume the least-privilege role.
 GRANT USAGE ON SCHEMA extensions TO cadence_command;
 
-insert into private.app_users (id, clerk_subject_id) values
-  ('10000000-0000-4000-8000-000000000001', 'synthetic-clerk-owner'),
-  ('10000000-0000-4000-8000-000000000002', 'synthetic-clerk-peer'),
-  ('10000000-0000-4000-8000-000000000003', 'synthetic-clerk-outsider');
+insert into private.app_users (id, clerk_subject_id, email_verified) values
+  ('10000000-0000-4000-8000-000000000001', 'synthetic-clerk-owner', true),
+  ('10000000-0000-4000-8000-000000000002', 'synthetic-clerk-peer', true),
+  ('10000000-0000-4000-8000-000000000003', 'synthetic-clerk-outsider', true);
 insert into private.workspaces (id, name) values
   ('20000000-0000-4000-8000-000000000001', 'Synthetic FSS pilot'),
   ('20000000-0000-4000-8000-000000000002', 'Synthetic other tenant');
@@ -143,10 +143,19 @@ reset role;
 set local role authenticated;
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[-1,-1]}', true);
 select ok((select count(*) from private.workspaces) = 0, 'MFA policy rejects sessions without a second factor');
-select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[1,300]}', true);
-select ok((select count(*) from private.workspaces) = 1, 'MFA policy accepts a recently verified second factor');
-select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[1,601]}', true);
+select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[1,10]}', true);
+select ok((select count(*) from private.workspaces) = 1, 'MFA policy accepts a second factor exactly ten minutes old');
+select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[1,11]}', true);
 select ok((select count(*) from private.workspaces) = 0, 'MFA policy rejects a second factor older than ten minutes');
+select ok(
+  (select security_settings_allowed and not workspace_allowed
+     from auth_api.current_session_access()),
+  'member without fresh MFA can reach only security settings'
+);
+select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[11,10]}', true);
+select ok((select count(*) from private.workspaces) = 0, 'MFA policy rejects a first factor older than ten minutes');
+select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[1,-1]}', true);
+select ok((select count(*) from private.workspaces) = 0, 'MFA policy rejects a missing second factor');
 
 reset role;
 delete from private.access_policy;

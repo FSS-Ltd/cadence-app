@@ -12,7 +12,21 @@ status_code="$(curl --silent --show-error --output "$response_file" --write-out 
   --header 'Accept-Profile: private' \
   "$api_url/rest/v1/sources?select=id")"
 if [[ "$status_code" != "406" ]] || ! grep --quiet --fixed-strings 'PGRST106' "$response_file"; then
-  echo "The private schema was not rejected by the Data API."
+echo "The private schema was not rejected by the Data API."
+exit 1
+fi
+
+status_code="$(curl --silent --show-error --output "$response_file" --write-out '%{http_code}' \
+  --request POST \
+  --header "apikey: $anon_key" \
+  --header "Authorization: Bearer $anon_key" \
+  --header 'Accept-Profile: auth_api' \
+  --header 'Content-Profile: auth_api' \
+  --header 'Content-Type: application/json' \
+  --data '{}' \
+  "$api_url/rest/v1/rpc/current_session_access")"
+if [[ "$status_code" == "200" ]]; then
+  echo "The authentication policy RPC returned data to an unauthenticated caller."
   exit 1
 fi
 

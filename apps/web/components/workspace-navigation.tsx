@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
+import { BrandMark } from "@/components/brand-mark";
 import {
   mobileNavigation,
   primaryNavigation,
@@ -72,16 +74,11 @@ export function MobileNavigation() {
 }
 
 export function WorkspaceHeader() {
-  const pathname = usePathname();
-  const settingsCurrent = pathname === "/settings";
-
   return (
     <header className="workspace-header">
       <div className="header-inner">
         <Link className="brand-lockup" href="/" aria-label="Cadence home">
-          <span className="brand-mark" aria-hidden="true">
-            C
-          </span>
+          <BrandMark className="brand-mark" />
           <span>Cadence</span>
         </Link>
 
@@ -113,14 +110,12 @@ export function WorkspaceHeader() {
           <Link className="button-primary header-create" href="/create">
             <span aria-hidden="true">+</span> Create new
           </Link>
-          <Link
-            className="profile-avatar"
-            href="/settings"
-            aria-label="Preview settings"
-            aria-current={settingsCurrent ? "page" : undefined}
-          >
-            SO
-          </Link>
+          <UserButton
+            userProfileUrl="/account/security"
+            userProfileMode="navigation"
+            signInUrl="/sign-in"
+            appearance={{ elements: { avatarBox: "profile-avatar" } }}
+          />
         </div>
       </div>
       <div className="preview-strip" role="note">

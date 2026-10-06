@@ -2,7 +2,7 @@ project_id = "cadence_app"
 
 [api]
 enabled = true
-schemas = ["public", "graphql_public"]
+schemas = ["public", "graphql_public", "auth_api"]
 extra_search_path = ["public", "extensions"]
 max_rows = 1000
 auto_expose_new_tables = false

@@ -181,13 +181,13 @@
   font-size: 0.72rem;
   font-weight: 800;
 }
-.step-marker-purple {
+.step-marker-accent {
   background: var(--color-accent-soft);
   color: var(--color-accent);
 }
-.step-marker-pink {
-  background: color-mix(in srgb, var(--color-pink) 15%, var(--color-surface));
-  color: var(--color-pink);
+.step-marker-muted {
+  background: var(--color-muted);
+  color: var(--color-text);
 }
 .next-step-item > div {
   min-width: 0;
