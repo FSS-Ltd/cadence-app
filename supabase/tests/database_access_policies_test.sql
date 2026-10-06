@@ -54,23 +54,23 @@ select ok(
 set local role cadence_command;
 select set_config('app.actor_id', '10000000-0000-4000-8000-000000000001', true);
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated"}', true);
-select is((select count(*)::integer from private.sources), 1, 'command can read its verified actor’s own source');
+select ok((select count(*) from private.sources) = 1, 'command can read its verified actor’s own source');
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-peer","role":"authenticated"}', true);
-select is((select count(*)::integer from private.workspaces), 0, 'command rejects actor and Clerk subject mismatch');
+select ok((select count(*) from private.workspaces) = 0, 'command rejects actor and Clerk subject mismatch');
 select set_config('request.jwt.claims', '{}', true);
-select is((select count(*)::integer from private.workspaces), 0, 'command rejects missing verified identity context');
+select ok((select count(*) from private.workspaces) = 0, 'command rejects missing verified identity context');
 reset role;
 
 set local role authenticated;
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated"}', true);
-select is((select count(*)::integer from private.sources), 1, 'creator can read their private capture');
+select ok((select count(*) from private.sources) = 1, 'creator can read their private capture');
 
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-peer","role":"authenticated"}', true);
-select is((select count(*)::integer from private.sources), 0, 'another workspace owner cannot read a private capture');
-select is((select count(*)::integer from private.workspaces), 1, 'workspace member can read only the pilot workspace');
+select ok((select count(*) from private.sources) = 0, 'another workspace owner cannot read a private capture');
+select ok((select count(*) from private.workspaces) = 1, 'workspace member can read only the pilot workspace');
 
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-outsider","role":"authenticated"}', true);
-select is((select count(*)::integer from private.workspaces), 0, 'unlisted identity cannot read a workspace');
+select ok((select count(*) from private.workspaces) = 0, 'unlisted identity cannot read a workspace');
 
 reset role;
 insert into private.source_grants (
@@ -87,29 +87,29 @@ set local role cadence_command;
 select set_config('app.actor_id', '10000000-0000-4000-8000-000000000002', true);
 select set_config('app.access_purpose', 'editorial_reuse', true);
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-peer","role":"authenticated"}', true);
-select is((select count(*)::integer from private.sources), 1, 'command can read a purpose-shared source');
+select ok((select count(*) from private.sources) = 1, 'command can read a purpose-shared source');
 select set_config('app.access_purpose', 'analytics', true);
-select is((select count(*)::integer from private.sources), 0, 'command cannot read a source for an ungranted purpose');
+select ok((select count(*) from private.sources) = 0, 'command cannot read a source for an ungranted purpose');
 reset role;
 set local role authenticated;
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-peer","role":"authenticated"}', true);
 select set_config('app.access_purpose', 'editorial_reuse', true);
-select is((select count(*)::integer from private.sources), 1, 'explicit purpose grant permits a shared capture');
+select ok((select count(*) from private.sources) = 1, 'explicit purpose grant permits a shared capture');
 select set_config('app.access_purpose', 'analytics', true);
-select is((select count(*)::integer from private.sources), 0, 'recipient cannot use a grant for a different purpose');
+select ok((select count(*) from private.sources) = 0, 'recipient cannot use a grant for a different purpose');
 reset role;
 update private.source_grants
 set revoked_at = now()
 where id = '50000000-0000-4000-8000-000000000001';
 set local role authenticated;
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-peer","role":"authenticated"}', true);
-select is((select count(*)::integer from private.sources), 0, 'revocation blocks later reads');
+select ok((select count(*) from private.sources) = 0, 'revocation blocks later reads');
 select throws_ok(
   $$insert into private.sources (workspace_id, creator_user_id, title, category, permitted_purposes)
     values ('20000000-0000-4000-8000-000000000001', '10000000-0000-4000-8000-000000000002', 'forbidden', 'personal_draft', array['editorial_reuse']::private.source_purpose[])$$,
   '42501', null, 'authenticated users cannot write source rows directly'
 );
-select is((select count(*)::integer from storage.objects where bucket_id = 'cadence-private'), 0,
+select ok((select count(*) from storage.objects where bucket_id = 'cadence-private') = 0,
   'private media bucket denies direct reads without an object policy');
 
 reset role;
@@ -117,21 +117,21 @@ update private.access_policy set mode = 'require_mfa';
 set local role cadence_command;
 select set_config('app.actor_id', '10000000-0000-4000-8000-000000000001', true);
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[1,601]}', true);
-select is((select count(*)::integer from private.workspaces), 0, 'command rejects stale MFA assurance');
+select ok((select count(*) from private.workspaces) = 0, 'command rejects stale MFA assurance');
 reset role;
 set local role authenticated;
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[-1,-1]}', true);
-select is((select count(*)::integer from private.workspaces), 0, 'MFA policy rejects sessions without a second factor');
+select ok((select count(*) from private.workspaces) = 0, 'MFA policy rejects sessions without a second factor');
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[1,300]}', true);
-select is((select count(*)::integer from private.workspaces), 1, 'MFA policy accepts a recently verified second factor');
+select ok((select count(*) from private.workspaces) = 1, 'MFA policy accepts a recently verified second factor');
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[1,601]}', true);
-select is((select count(*)::integer from private.workspaces), 0, 'MFA policy rejects a second factor older than ten minutes');
+select ok((select count(*) from private.workspaces) = 0, 'MFA policy rejects a second factor older than ten minutes');
 
 reset role;
 delete from private.access_policy;
 set local role authenticated;
 select set_config('request.jwt.claims', '{"sub":"synthetic-clerk-owner","role":"authenticated","fva":[1,1]}', true);
-select is((select count(*)::integer from private.workspaces), 0, 'missing auth policy fails closed');
+select ok((select count(*) from private.workspaces) = 0, 'missing auth policy fails closed');
 select ok(not has_schema_privilege('authenticated', 'private', 'CREATE'), 'authenticated role cannot create objects in private schema');
 
 SELECT * FROM finish();
