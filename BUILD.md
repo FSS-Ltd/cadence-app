@@ -43,10 +43,12 @@ Use this sequence for every build step, including standalone implementation work
    fix failures and requested changes within this same step. After every push,
    recheck CI. Do not remove tests, weaken check commands or change branch rules
    just to obtain a green result. Explain pre-existing failures without ignoring them.
-5. **Merge and verify:** satisfy required checks, reviews and conversations.
-   Merge only when already authorized; otherwise leave the concrete PR ready for
-   the authorized reviewer. Verify actual merged state, base branch and merge
-   commit from the repository host. A closed but unmerged PR does not qualify.
+5. **Merge and verify:** satisfy required checks and any configured review or
+   conversation rules. For Cadence, the solo owner reviews the full PR diff;
+   independent GitHub approval is not required. Merge only when already
+   authorized; otherwise leave the concrete PR ready for the authorized owner.
+   Verify actual merged state, base branch and merge commit from the repository
+   host. A closed but unmerged PR does not qualify.
 6. **Record and advance:** update the existing progress record with evidence,
    fetch the merged base and use it for the next authorized step. Preserve local
    work when updating branches. Never begin the next step before the gate passes.
@@ -95,10 +97,13 @@ Rule files guide agents; configure the host to enforce merge policy too. Inspect
 existing rules first. Propose missing protections and apply them when authorized:
 
 - Protect the delivery base with active rulesets or branch protection requiring
-  PRs, named required CI checks, configured review approvals and resolved review
-  conversations. Require code-owner review for sensitive paths when configured.
+  PRs and named CI checks. Set review approvals and conversation resolution to
+  match the repository's documented review policy. For Cadence, the solo owner
+  reviews each full diff and the active ruleset requires zero approvals. Require
+  code-owner review for sensitive paths only when configured.
 - Disallow force pushes and deletion; avoid agent/admin bypass paths. An agent's
-  self-review never substitutes for a required independent approval.
+  self-review never substitutes for a platform approval when the repository
+  requires one; Cadence's documented owner review is manual and approval-free.
 - Ensure CI covers the current revision and integration with the base through
   strict/up-to-date checks or a merge queue, according to repository policy.
 - Give check jobs distinct, stable names. Avoid required workflows that never

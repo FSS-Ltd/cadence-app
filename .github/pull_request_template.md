@@ -27,4 +27,5 @@ Checks run and results:
 ## Delivery gate
 
 - [ ] This is one standalone build step; the next step has not started.
-- [ ] Merge will occur only after required independent review and successful current-revision CI.
+- [ ] The repository owner has reviewed the full diff before merge; no independent GitHub approval is required for this solo-developer repository.
+- [ ] Both required checks pass on the current revision before merge.
