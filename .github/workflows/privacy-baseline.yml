@@ -66,6 +66,7 @@ jobs:
           set +a
           bash scripts/test-data-api-boundary.sh
           bash scripts/test-transaction-context.sh
+          bash scripts/test-access-concurrency.sh
       - name: Check whitespace errors
         run: |
           if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then

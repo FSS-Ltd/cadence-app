@@ -33,7 +33,13 @@ set search_path = pg_catalog, private as $$
     order by created_at desc, id desc limit 1
 $$;
 -- The test runner creates pg_temp as postgres; role-switched fixtures need usage.
-grant usage on schema pg_temp to cadence_command, cadence_operator, authenticated;
+do $$
+declare temporary_schema text;
+begin
+  select nspname into temporary_schema from pg_namespace where oid = pg_my_temp_schema();
+  execute format('grant usage on schema %I to cadence_command, cadence_operator, authenticated', temporary_schema);
+end
+$$;
 grant usage on schema extensions to cadence_command, cadence_operator;
 grant execute on function pg_temp.as_actor(integer), pg_temp.invite_id(integer)
   to cadence_command, cadence_operator, authenticated;
