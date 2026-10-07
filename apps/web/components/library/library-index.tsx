@@ -1,34 +1,35 @@
 "use client";
 
-import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import type { LibraryPage } from "@cadence/contracts/library";
 import type { SourcePurpose } from "@cadence/contracts/sources";
-import { sourcePurposeSchema } from "@cadence/contracts/sources";
 import { useWorkspace } from "@/components/workspace-context";
 import { requestLibrary } from "@/lib/library/client";
 import { LibraryDetail } from "./library-detail";
 import type { LibrarySelection } from "./library-detail";
 import { LibraryResults } from "./library-results";
 import { BrandEditor } from "./brand-editor";
+import { LibraryControls } from "./library-controls";
 
 type Resource = LibraryPage["resource"];
-const resources: ReadonlyArray<{ value: Resource; label: string }> = [
-  { value: "sources", label: "Captures" },
-  { value: "excerpts", label: "Reviewed excerpts" },
-  { value: "brands", label: "Brands" },
-];
-const purposes: ReadonlyArray<{ value: SourcePurpose; label: string }> = [
-  { value: "editorial_reuse", label: "Editorial drafts" },
-  { value: "excerpt_release", label: "Excerpt review" },
-  { value: "analytics", label: "Private analytics" },
-  { value: "ai_proposal", label: "Future AI proposals" },
-];
 
 function isLibraryPage(value: unknown): value is LibraryPage {
   return typeof value === "object" && value !== null && "resource" in value;
+}
+
+function appendLibraryPage(
+  current: LibraryPage,
+  next: LibraryPage,
+): LibraryPage {
+  if (current.resource === "sources" && next.resource === "sources")
+    return { ...next, items: [...current.items, ...next.items] };
+  if (current.resource === "excerpts" && next.resource === "excerpts")
+    return { ...next, items: [...current.items, ...next.items] };
+  if (current.resource === "brands" && next.resource === "brands")
+    return { ...next, items: [...current.items, ...next.items] };
+  throw new Error("Invalid library page");
 }
 
 export function LibraryIndex() {
@@ -57,6 +58,8 @@ function LibraryContents() {
   const [refresh, setRefresh] = useState(0);
   const [creatingBrand, setCreatingBrand] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [loadingMoreKey, setLoadingMoreKey] = useState<string | null>(null);
+  const [loadMoreErrorKey, setLoadMoreErrorKey] = useState<string | null>(null);
   const searchKey = JSON.stringify([
     workspace.id,
     resource,
@@ -70,6 +73,8 @@ function LibraryContents() {
   const currentSelection = selectedFor === searchKey ? selected : null;
   const currentDetailLoading = selectedFor === searchKey && detailLoading;
   const currentDetailError = selectedFor === searchKey && detailError;
+  const loadingMore = loadingMoreKey === searchKey;
+  const loadMoreError = loadMoreErrorKey === searchKey;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -154,73 +159,47 @@ function LibraryContents() {
     setQuery(searchText.trim());
   }
 
+  async function loadMore(): Promise<void> {
+    if (!page?.nextCursor || loadingMore) return;
+    setLoadingMoreKey(searchKey);
+    setLoadMoreErrorKey(null);
+    try {
+      const next = await requestLibrary(workspace.id, {
+        action: "library.search",
+        resource,
+        query,
+        after: page.nextCursor,
+        limit: 50,
+        purpose,
+      });
+      if (!isLibraryPage(next)) throw new Error("Invalid library page");
+      setPageState((current) =>
+        current?.key === searchKey && current.page
+          ? {
+              key: searchKey,
+              page: appendLibraryPage(current.page, next),
+              error: false,
+            }
+          : current,
+      );
+    } catch {
+      setLoadMoreErrorKey(searchKey);
+    } finally {
+      setLoadingMoreKey((current) => (current === searchKey ? null : current));
+    }
+  }
+
   return (
     <div className="library-page">
-      <header className="library-heading">
-        <div>
-          <p className="eyebrow">PRIVATE LIBRARY</p>
-          <h1>Library</h1>
-          <p>Only material you can access appears here.</p>
-        </div>
-        <Link className="button-primary" href="/create">
-          + New capture
-        </Link>
-      </header>
-      <div className="library-tabs" role="group" aria-label="Library section">
-        {resources.map((tab) => (
-          <button
-            key={tab.value}
-            type="button"
-            className={resource === tab.value ? "is-current" : undefined}
-            aria-pressed={resource === tab.value}
-            onClick={() => setResource(tab.value)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-      <form
-        className="library-toolbar"
+      <LibraryControls
+        resource={resource}
+        purpose={purpose}
+        searchText={searchText}
+        onResourceChange={setResource}
+        onPurposeChange={setPurpose}
+        onSearchTextChange={setSearchText}
         onSubmit={submitSearch}
-        autoComplete="off"
-      >
-        <label htmlFor="library-query">Search {resource}</label>
-        <div className="library-search-controls">
-          <input
-            id="library-query"
-            type="search"
-            maxLength={200}
-            value={searchText}
-            onChange={(event) => setSearchText(event.target.value)}
-            placeholder="Search only material you may see"
-            autoComplete="off"
-            spellCheck={false}
-          />
-          <button className="button-secondary" type="submit">
-            Search
-          </button>
-        </div>
-        {resource !== "brands" && (
-          <label className="library-purpose">
-            View for
-            <select
-              value={purpose}
-              onChange={(event) => {
-                const selected = sourcePurposeSchema.safeParse(
-                  event.target.value,
-                );
-                if (selected.success) setPurpose(selected.data);
-              }}
-            >
-              {purposes.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-      </form>
+      />
       {notice && (
         <p className="capture-message is-success" role="status">
           {notice}
@@ -246,6 +225,9 @@ function LibraryContents() {
           loading={loading}
           error={error}
           onSelect={openSelection}
+          onLoadMore={loadMore}
+          loadingMore={loadingMore}
+          loadMoreError={loadMoreError}
         />
         <LibraryDetail
           selected={currentSelection}

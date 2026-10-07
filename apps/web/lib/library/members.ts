@@ -3,6 +3,7 @@ import type { AccessReadResult } from "@cadence/contracts/access";
 import { LibraryRequestError } from "./client";
 
 type MemberPage = Extract<AccessReadResult, { resource: "members" }>;
+type Summary = Extract<AccessReadResult, { resource: "summary" }>;
 
 async function readAccess(
   workspaceId: string,
@@ -27,18 +28,26 @@ async function readAccess(
   return parsed.data;
 }
 
-export async function readOtherMembers(
+export async function readWorkspaceMembers(
   workspaceId: string,
   signal: AbortSignal,
-): Promise<MemberPage["items"]> {
+): Promise<{ actor: Summary["actor"]; members: MemberPage["items"] }> {
   const [summary, members] = await Promise.all([
     readAccess(workspaceId, "summary", signal),
     readAccess(workspaceId, "members", signal),
   ]);
   if (summary.resource !== "summary" || members.resource !== "members")
     throw new LibraryRequestError("SERVICE_UNAVAILABLE");
-  return members.items.filter(
-    (member) =>
-      member.removedAt === null && member.userId !== summary.actor.userId,
-  );
+  return {
+    actor: summary.actor,
+    members: members.items.filter((member) => member.removedAt === null),
+  };
+}
+
+export async function readOtherMembers(
+  workspaceId: string,
+  signal: AbortSignal,
+): Promise<MemberPage["items"]> {
+  const { actor, members } = await readWorkspaceMembers(workspaceId, signal);
+  return members.filter((member) => member.userId !== actor.userId);
 }

@@ -8,12 +8,18 @@ export function LibraryResults({
   loading,
   error,
   onSelect,
+  onLoadMore,
+  loadingMore,
+  loadMoreError,
 }: Readonly<{
   resource: Resource;
   page: LibraryPage | null;
   loading: boolean;
   error: boolean;
   onSelect: (item: { id: string }, resource: Resource) => void;
+  onLoadMore: () => void;
+  loadingMore: boolean;
+  loadMoreError: boolean;
 }>) {
   return (
     <section className="surface-panel" aria-label={`${resource} results`}>
@@ -73,6 +79,21 @@ export function LibraryResults({
               </li>
             ))}
         </ul>
+      )}
+      {page?.nextCursor && (
+        <button
+          className="button-secondary library-load-more"
+          type="button"
+          onClick={onLoadMore}
+          disabled={loadingMore}
+        >
+          {loadingMore ? "Loading…" : "Load more"}
+        </button>
+      )}
+      {loadMoreError && (
+        <p className="library-state" role="alert">
+          More results could not be loaded. Try again.
+        </p>
       )}
     </section>
   );

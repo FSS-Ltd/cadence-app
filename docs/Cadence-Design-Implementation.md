@@ -74,3 +74,9 @@ separate original, reviewed excerpt and brand views. An excerpt detail displays
 only its reviewed text and revision number. Both screens clear client state when
 the Clerk user or session changes. Final device, keyboard and contrast review
 remains part of the step 1.3 acceptance gate.
+
+Source controls show the exact content and access versions before an edit,
+share, excerpt release, revocation or erasure. A changed recipient, purpose or
+excerpt resets the confirmation. Recovery appears only as an owner action in
+Settings and never previews orphaned text. These high-consequence controls use
+visible text labels and direct feedback instead of icon-only actions.
