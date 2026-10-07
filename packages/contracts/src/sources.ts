@@ -6,6 +6,7 @@ export const sourcePurposeSchema = z.enum([
   "analytics",
   "ai_proposal",
 ]);
+export type SourcePurpose = z.infer<typeof sourcePurposeSchema>;
 export const sourceCategorySchema = z.enum([
   "personal_draft",
   "client_confidential",

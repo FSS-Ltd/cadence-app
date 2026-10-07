@@ -54,6 +54,22 @@ test("actual restricted driver preserves capture and excerpt isolation", async (
     client = createCommandClient(
       "postgresql://cadence_source_driver_test:synthetic-local-test-only@127.0.0.1:54322/postgres",
     );
+    const workspaces = await withCommandTransaction(
+      client,
+      principal(1),
+      (tx) => tx`
+        select workspace.id, workspace.name
+        from private.workspaces as workspace
+        join private.workspace_memberships as membership
+          on membership.workspace_id = workspace.id
+        where membership.user_id = private.current_actor_id()
+          and membership.removed_at is null
+        order by workspace.id
+        limit 2`,
+    );
+    assert.deepEqual(workspaces, [
+      { id: workspace, name: "Synthetic source driver workspace" },
+    ]);
     const created = await withCommandTransaction(client, principal(1), (tx) =>
       executeSourceCommand(tx, workspace, capture),
     );
