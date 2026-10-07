@@ -71,10 +71,6 @@
   color: var(--color-subtle);
   font-size: 0.62rem;
 }
-.workspace-chevron {
-  margin-left: auto;
-  color: var(--color-subtle);
-}
 .primary-navigation {
   display: flex;
   flex: 1 1 auto;
@@ -135,10 +131,6 @@
   background: var(--color-paper);
   color: var(--color-subtle);
   font-size: 0.68rem;
-}
-.search-preview:disabled {
-  cursor: not-allowed;
-  opacity: 0.78;
 }
 .button-primary {
   display: inline-flex;

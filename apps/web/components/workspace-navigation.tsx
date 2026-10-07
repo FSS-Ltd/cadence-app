@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 import { BrandMark } from "@/components/brand-mark";
+import { useWorkspace } from "@/components/workspace-context";
 import {
   mobileNavigation,
   primaryNavigation,
@@ -74,6 +75,7 @@ export function MobileNavigation() {
 }
 
 export function WorkspaceHeader() {
+  const workspace = useWorkspace();
   return (
     <header className="workspace-header">
       <div className="header-inner">
@@ -84,29 +86,21 @@ export function WorkspaceHeader() {
 
         <div className="workspace-switcher">
           <span className="workspace-avatar" aria-hidden="true">
-            ES
+            {workspace.name.slice(0, 2).toUpperCase()}
           </span>
           <span className="workspace-copy">
-            <strong>Example Studio</strong>
-            <small>Preview workspace</small>
-          </span>
-          <span className="workspace-chevron" aria-hidden="true">
-            ⌄
+            <strong>{workspace.name}</strong>
+            <small>Closed pilot</small>
           </span>
         </div>
 
         <PrimaryNavigation />
 
         <div className="header-actions">
-          <button
-            className="search-preview"
-            type="button"
-            disabled
-            aria-label="Search is unavailable in the synthetic preview"
-          >
+          <Link className="search-preview" href="/library">
             <span aria-hidden="true">⌕</span>
-            <span>Search unavailable</span>
-          </button>
+            <span>Search library</span>
+          </Link>
           <Link className="button-primary header-create" href="/create">
             <span aria-hidden="true">+</span> Create new
           </Link>
@@ -120,7 +114,7 @@ export function WorkspaceHeader() {
       </div>
       <div className="preview-strip" role="note">
         <span className="status-dot" aria-hidden="true" />
-        Synthetic preview · No account or client information is connected
+        Closed pilot · Use synthetic content until privacy readiness is complete
         <Link href="/access-denied">Preview access state</Link>
       </div>
     </header>

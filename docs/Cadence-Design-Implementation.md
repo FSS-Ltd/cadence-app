@@ -57,3 +57,26 @@ than inventing a new visual direction.
 Keep all authentication pages responsive, keyboard-accessible, no-store and
 content-free. The Clerk appearance is reviewed against the live screen when
 environment credentials are configured; CI uses the safe unconfigured state.
+
+## Step 1.3 mapping in progress
+
+The text capture screen follows Stitch S03's task heading, primary capture
+surface, right-hand brand and visibility settings, and anchored save decision.
+It uses the owner's Tangerine/Charcoal/Ivory/Slate palette and the existing
+transparent Cadence C. The Stitch microphone, live transcript and recording
+controls remain absent: step 1.3 admits private text only. The form states that
+the original is private, asks for category and permitted purposes, and requires
+an explicit allowed-data decision before saving. Its fields stay in memory until
+the authorised save request; browser form autocomplete and spellcheck are off.
+
+The library uses the same calm card hierarchy, with purpose-filtered search and
+separate original, reviewed excerpt and brand views. An excerpt detail displays
+only its reviewed text and revision number. Both screens clear client state when
+the Clerk user or session changes. Final device, keyboard and contrast review
+remains part of the step 1.3 acceptance gate.
+
+Source controls show the exact content and access versions before an edit,
+share, excerpt release, revocation or erasure. A changed recipient, purpose or
+excerpt resets the confirmation. Recovery appears only as an owner action in
+Settings and never previews orphaned text. These high-consequence controls use
+visible text labels and direct feedback instead of icon-only actions.

@@ -204,6 +204,125 @@ export type Database = {
         };
         Relationships: [];
       };
+      brand_assignments: {
+        Row: {
+          brand_id: string;
+          user_id: string;
+          workspace_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          brand_id: string;
+          user_id: string;
+          workspace_id: string;
+        };
+        Update: {
+          brand_id?: string;
+          user_id?: string;
+          workspace_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "brand_assignments_workspace_id_brand_id_fkey";
+            columns: ["workspace_id", "brand_id"];
+            isOneToOne: false;
+            referencedRelation: "brands";
+            referencedColumns: ["workspace_id", "id"];
+          },
+          {
+            foreignKeyName: "brand_assignments_workspace_id_user_id_fkey";
+            columns: ["workspace_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "workspace_memberships";
+            referencedColumns: ["workspace_id", "user_id"];
+          },
+        ];
+      };
+      brand_playbooks: {
+        Row: {
+          audience: string;
+          brand_id: string;
+          created_at: string;
+          created_by_user_id: string;
+          guidance: string;
+          version: number;
+          voice: string;
+          workspace_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          audience: string;
+          brand_id: string;
+          created_at?: string;
+          created_by_user_id: string;
+          guidance: string;
+          version: number;
+          voice: string;
+          workspace_id: string;
+        };
+        Update: {
+          audience?: string;
+          brand_id?: string;
+          created_at?: string;
+          created_by_user_id?: string;
+          guidance?: string;
+          version?: number;
+          voice?: string;
+          workspace_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "brand_playbooks_workspace_id_brand_id_fkey";
+            columns: ["workspace_id", "brand_id"];
+            isOneToOne: false;
+            referencedRelation: "brands";
+            referencedColumns: ["workspace_id", "id"];
+          },
+          {
+            foreignKeyName: "brand_playbooks_workspace_id_created_by_user_id_fkey";
+            columns: ["workspace_id", "created_by_user_id"];
+            isOneToOne: false;
+            referencedRelation: "workspace_memberships";
+            referencedColumns: ["workspace_id", "user_id"];
+          },
+        ];
+      };
+      brands: {
+        Row: {
+          access_version: number;
+          created_at: string;
+          id: string;
+          name: string;
+          version: number;
+          workspace_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          access_version?: number;
+          created_at?: string;
+          id?: string;
+          name: string;
+          version?: number;
+          workspace_id: string;
+        };
+        Update: {
+          access_version?: number;
+          created_at?: string;
+          id?: string;
+          name?: string;
+          version?: number;
+          workspace_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "brands_workspace_id_fkey";
+            columns: ["workspace_id"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       destination_grants: {
         Row: {
           destination_id: string;
@@ -244,6 +363,7 @@ export type Database = {
           id: string;
           reason_code: string;
           requested_at: string;
+          source_id: string | null;
           state: string;
           subject_user_id: string;
           workspace_id: string;
@@ -254,6 +374,7 @@ export type Database = {
           id?: string;
           reason_code: string;
           requested_at?: string;
+          source_id?: string | null;
           state?: string;
           subject_user_id: string;
           workspace_id: string;
@@ -263,6 +384,7 @@ export type Database = {
           id?: string;
           reason_code?: string;
           requested_at?: string;
+          source_id?: string | null;
           state?: string;
           subject_user_id?: string;
           workspace_id?: string;
@@ -281,6 +403,50 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "workspaces";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "erasure_source_fk";
+            columns: ["workspace_id", "source_id"];
+            isOneToOne: false;
+            referencedRelation: "sources";
+            referencedColumns: ["workspace_id", "id"];
+          },
+        ];
+      };
+      excerpt_grants: {
+        Row: {
+          excerpt_id: string;
+          purpose: Database["private"]["Enums"]["source_purpose"];
+          recipient_user_id: string;
+          workspace_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          excerpt_id: string;
+          purpose: Database["private"]["Enums"]["source_purpose"];
+          recipient_user_id: string;
+          workspace_id: string;
+        };
+        Update: {
+          excerpt_id?: string;
+          purpose?: Database["private"]["Enums"]["source_purpose"];
+          recipient_user_id?: string;
+          workspace_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "excerpt_grants_workspace_id_excerpt_id_fkey";
+            columns: ["workspace_id", "excerpt_id"];
+            isOneToOne: false;
+            referencedRelation: "source_excerpts";
+            referencedColumns: ["workspace_id", "id"];
+          },
+          {
+            foreignKeyName: "excerpt_grants_workspace_id_recipient_user_id_fkey";
+            columns: ["workspace_id", "recipient_user_id"];
+            isOneToOne: false;
+            referencedRelation: "workspace_memberships";
+            referencedColumns: ["workspace_id", "user_id"];
           },
         ];
       };
@@ -363,8 +529,67 @@ export type Database = {
         };
         Relationships: [];
       };
+      source_excerpts: {
+        Row: {
+          body: string | null;
+          created_at: string;
+          erased_at: string | null;
+          id: string;
+          reviewed_by_user_id: string;
+          revoked_at: string | null;
+          search_document: unknown;
+          source_access_version: number;
+          source_id: string;
+          source_version: number;
+          workspace_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          body?: string | null;
+          created_at?: string;
+          erased_at?: string | null;
+          id?: string;
+          reviewed_by_user_id: string;
+          revoked_at?: string | null;
+          search_document?: never;
+          source_access_version: number;
+          source_id: string;
+          source_version: number;
+          workspace_id: string;
+        };
+        Update: {
+          body?: string | null;
+          created_at?: string;
+          erased_at?: string | null;
+          id?: string;
+          reviewed_by_user_id?: string;
+          revoked_at?: string | null;
+          search_document?: never;
+          source_access_version?: number;
+          source_id?: string;
+          source_version?: number;
+          workspace_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "source_excerpts_workspace_id_reviewed_by_user_id_fkey";
+            columns: ["workspace_id", "reviewed_by_user_id"];
+            isOneToOne: false;
+            referencedRelation: "workspace_memberships";
+            referencedColumns: ["workspace_id", "user_id"];
+          },
+          {
+            foreignKeyName: "source_excerpts_workspace_id_source_id_source_version_fkey";
+            columns: ["workspace_id", "source_id", "source_version"];
+            isOneToOne: false;
+            referencedRelation: "source_revisions";
+            referencedColumns: ["workspace_id", "source_id", "version"];
+          },
+        ];
+      };
       source_grants: {
         Row: {
+          access_version: number;
           created_at: string;
           granted_by_user_id: string;
           id: string;
@@ -372,10 +597,12 @@ export type Database = {
           recipient_user_id: string;
           revoked_at: string | null;
           source_id: string;
+          source_version: number;
           workspace_id: string;
         };
         ComputedFields: never;
         Insert: {
+          access_version?: number;
           created_at?: string;
           granted_by_user_id: string;
           id?: string;
@@ -383,9 +610,11 @@ export type Database = {
           recipient_user_id: string;
           revoked_at?: string | null;
           source_id: string;
+          source_version?: number;
           workspace_id: string;
         };
         Update: {
+          access_version?: number;
           created_at?: string;
           granted_by_user_id?: string;
           id?: string;
@@ -393,9 +622,17 @@ export type Database = {
           recipient_user_id?: string;
           revoked_at?: string | null;
           source_id?: string;
+          source_version?: number;
           workspace_id?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "source_grant_revision_fk";
+            columns: ["workspace_id", "source_id", "source_version"];
+            isOneToOne: false;
+            referencedRelation: "source_revisions";
+            referencedColumns: ["workspace_id", "source_id", "version"];
+          },
           {
             foreignKeyName: "source_grants_workspace_id_granted_by_user_id_fkey";
             columns: ["workspace_id", "granted_by_user_id"];
@@ -419,13 +656,126 @@ export type Database = {
           },
         ];
       };
+      source_recoveries: {
+        Row: {
+          actor_user_id: string;
+          created_at: string;
+          custodian_user_id: string;
+          expires_at: string;
+          id: string;
+          reason_code: string;
+          source_id: string;
+          workspace_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          actor_user_id: string;
+          created_at?: string;
+          custodian_user_id: string;
+          expires_at?: string;
+          id?: string;
+          reason_code: string;
+          source_id: string;
+          workspace_id: string;
+        };
+        Update: {
+          actor_user_id?: string;
+          created_at?: string;
+          custodian_user_id?: string;
+          expires_at?: string;
+          id?: string;
+          reason_code?: string;
+          source_id?: string;
+          workspace_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "source_recoveries_workspace_id_actor_user_id_fkey";
+            columns: ["workspace_id", "actor_user_id"];
+            isOneToOne: false;
+            referencedRelation: "workspace_memberships";
+            referencedColumns: ["workspace_id", "user_id"];
+          },
+          {
+            foreignKeyName: "source_recoveries_workspace_id_custodian_user_id_fkey";
+            columns: ["workspace_id", "custodian_user_id"];
+            isOneToOne: false;
+            referencedRelation: "workspace_memberships";
+            referencedColumns: ["workspace_id", "user_id"];
+          },
+          {
+            foreignKeyName: "source_recoveries_workspace_id_source_id_fkey";
+            columns: ["workspace_id", "source_id"];
+            isOneToOne: false;
+            referencedRelation: "sources";
+            referencedColumns: ["workspace_id", "id"];
+          },
+        ];
+      };
+      source_revisions: {
+        Row: {
+          authored_by_user_id: string;
+          body: string | null;
+          created_at: string;
+          erased_at: string | null;
+          search_document: unknown;
+          source_id: string;
+          title: string | null;
+          version: number;
+          workspace_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          authored_by_user_id: string;
+          body?: string | null;
+          created_at?: string;
+          erased_at?: string | null;
+          search_document?: never;
+          source_id: string;
+          title?: string | null;
+          version: number;
+          workspace_id: string;
+        };
+        Update: {
+          authored_by_user_id?: string;
+          body?: string | null;
+          created_at?: string;
+          erased_at?: string | null;
+          search_document?: never;
+          source_id?: string;
+          title?: string | null;
+          version?: number;
+          workspace_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "source_revisions_workspace_id_authored_by_user_id_fkey";
+            columns: ["workspace_id", "authored_by_user_id"];
+            isOneToOne: false;
+            referencedRelation: "workspace_memberships";
+            referencedColumns: ["workspace_id", "user_id"];
+          },
+          {
+            foreignKeyName: "source_revisions_workspace_id_source_id_fkey";
+            columns: ["workspace_id", "source_id"];
+            isOneToOne: false;
+            referencedRelation: "sources";
+            referencedColumns: ["workspace_id", "id"];
+          },
+        ];
+      };
       sources: {
         Row: {
           access_version: number;
+          brand_id: string | null;
           category: Database["private"]["Enums"]["source_category"];
+          client_authority_confirmed: boolean;
+          content_version: number;
           created_at: string;
           creator_user_id: string;
+          custodian_user_id: string | null;
           deleted_at: string | null;
+          expires_at: string | null;
           id: string;
           permitted_purposes: Database["private"]["Enums"]["source_purpose"][];
           state: Database["private"]["Enums"]["source_state"];
@@ -435,10 +785,15 @@ export type Database = {
         ComputedFields: never;
         Insert: {
           access_version?: number;
+          brand_id?: string | null;
           category: Database["private"]["Enums"]["source_category"];
+          client_authority_confirmed?: boolean;
+          content_version?: number;
           created_at?: string;
           creator_user_id: string;
+          custodian_user_id?: string | null;
           deleted_at?: string | null;
+          expires_at?: string | null;
           id?: string;
           permitted_purposes: Database["private"]["Enums"]["source_purpose"][];
           state?: Database["private"]["Enums"]["source_state"];
@@ -447,10 +802,15 @@ export type Database = {
         };
         Update: {
           access_version?: number;
+          brand_id?: string | null;
           category?: Database["private"]["Enums"]["source_category"];
+          client_authority_confirmed?: boolean;
+          content_version?: number;
           created_at?: string;
           creator_user_id?: string;
+          custodian_user_id?: string | null;
           deleted_at?: string | null;
+          expires_at?: string | null;
           id?: string;
           permitted_purposes?: Database["private"]["Enums"]["source_purpose"][];
           state?: Database["private"]["Enums"]["source_state"];
@@ -458,6 +818,20 @@ export type Database = {
           workspace_id?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "sources_brand_fk";
+            columns: ["workspace_id", "brand_id"];
+            isOneToOne: false;
+            referencedRelation: "brands";
+            referencedColumns: ["workspace_id", "id"];
+          },
+          {
+            foreignKeyName: "sources_custodian_fk";
+            columns: ["workspace_id", "custodian_user_id"];
+            isOneToOne: false;
+            referencedRelation: "workspace_memberships";
+            referencedColumns: ["workspace_id", "user_id"];
+          },
           {
             foreignKeyName: "sources_workspace_id_creator_user_id_fkey";
             columns: ["workspace_id", "creator_user_id"];
@@ -731,6 +1105,17 @@ export type Database = {
         };
         Returns: Json;
       };
+      begin_source_read: {
+        Args: {
+          p_purpose: Database["private"]["Enums"]["source_purpose"];
+          p_workspace_id: string;
+        };
+        Returns: undefined;
+      };
+      brand_visible: {
+        Args: { p_brand_id: string; p_workspace_id: string };
+        Returns: boolean;
+      };
       change_workspace_member: {
         Args: {
           p_expected_version: number;
@@ -771,6 +1156,21 @@ export type Database = {
         };
         Returns: Json;
       };
+      create_private_capture: {
+        Args: {
+          p_allowed_data_confirmed: boolean;
+          p_body: string;
+          p_brand_id: string;
+          p_category: Database["private"]["Enums"]["source_category"];
+          p_client_authority: boolean;
+          p_expires_at: string;
+          p_purposes: Database["private"]["Enums"]["source_purpose"][];
+          p_request_id: string;
+          p_title: string;
+          p_workspace_id: string;
+        };
+        Returns: Json;
+      };
       current_access_purpose: {
         Args: Record<PropertyKey, never>;
         Returns: Database["private"]["Enums"]["source_purpose"];
@@ -793,6 +1193,28 @@ export type Database = {
           p_workspace_id: string;
         };
         Returns: Json;
+      };
+      erase_private_source: {
+        Args: {
+          p_expected_access_version: number;
+          p_expected_content_version: number;
+          p_request_id: string;
+          p_source_id: string;
+          p_workspace_id: string;
+        };
+        Returns: Json;
+      };
+      excerpt_visible: {
+        Args: {
+          p_excerpt_id: string;
+          p_purpose: Database["private"]["Enums"]["source_purpose"];
+          p_workspace_id: string;
+        };
+        Returns: boolean;
+      };
+      invalidate_source_reuse: {
+        Args: { p_source_id: string; p_workspace_id: string };
+        Returns: undefined;
       };
       issue_workspace_invitation: {
         Args: {
@@ -828,11 +1250,54 @@ export type Database = {
         };
         Returns: Json;
       };
+      read_reviewed_excerpt: {
+        Args: {
+          p_excerpt_id: string;
+          p_purpose: Database["private"]["Enums"]["source_purpose"];
+          p_workspace_id: string;
+        };
+        Returns: Json;
+      };
+      read_source_revision: {
+        Args: {
+          p_purpose: Database["private"]["Enums"]["source_purpose"];
+          p_source_id: string;
+          p_version: number;
+          p_workspace_id: string;
+        };
+        Returns: Json;
+      };
       read_workspace_access: {
         Args: {
           p_after_id: string;
           p_limit: number;
           p_resource: string;
+          p_workspace_id: string;
+        };
+        Returns: Json;
+      };
+      recover_orphaned_source: {
+        Args: {
+          p_custodian_id: string;
+          p_expected_access_version: number;
+          p_expected_content_version: number;
+          p_reason_code: string;
+          p_request_id: string;
+          p_source_id: string;
+          p_workspace_id: string;
+        };
+        Returns: Json;
+      };
+      release_reviewed_excerpt: {
+        Args: {
+          p_body: string;
+          p_expected_access_version: number;
+          p_expected_content_version: number;
+          p_purposes: Database["private"]["Enums"]["source_purpose"][];
+          p_recipients: string[];
+          p_request_id: string;
+          p_review_confirmed: boolean;
+          p_source_id: string;
           p_workspace_id: string;
         };
         Returns: Json;
@@ -847,6 +1312,38 @@ export type Database = {
         };
         Returns: Json;
       };
+      require_source_custodian: {
+        Args: {
+          p_access_version: number;
+          p_allow_expired?: boolean;
+          p_content_version: number;
+          p_source_id: string;
+          p_workspace_id: string;
+        };
+        Returns: {
+          access_version: number;
+          brand_id: string | null;
+          category: Database["private"]["Enums"]["source_category"];
+          client_authority_confirmed: boolean;
+          content_version: number;
+          created_at: string;
+          creator_user_id: string;
+          custodian_user_id: string | null;
+          deleted_at: string | null;
+          expires_at: string | null;
+          id: string;
+          permitted_purposes: Database["private"]["Enums"]["source_purpose"][];
+          state: Database["private"]["Enums"]["source_state"];
+          title: string;
+          workspace_id: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "sources";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       require_workspace_role: {
         Args: {
           p_roles: Database["private"]["Enums"]["workspace_role"][];
@@ -858,6 +1355,34 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: string;
       };
+      revise_private_capture: {
+        Args: {
+          p_allowed_data_confirmed: boolean;
+          p_body: string;
+          p_brand_id: string;
+          p_category: Database["private"]["Enums"]["source_category"];
+          p_client_authority: boolean;
+          p_expected_access_version: number;
+          p_expected_content_version: number;
+          p_expires_at: string;
+          p_purposes: Database["private"]["Enums"]["source_purpose"][];
+          p_request_id: string;
+          p_source_id: string;
+          p_title: string;
+          p_workspace_id: string;
+        };
+        Returns: Json;
+      };
+      revoke_source_sharing: {
+        Args: {
+          p_expected_access_version: number;
+          p_expected_content_version: number;
+          p_request_id: string;
+          p_source_id: string;
+          p_workspace_id: string;
+        };
+        Returns: Json;
+      };
       revoke_workspace_invitation: {
         Args: {
           p_expected_version: number;
@@ -867,9 +1392,31 @@ export type Database = {
         };
         Returns: Json;
       };
+      search_private_library: {
+        Args: {
+          p_after_id: string;
+          p_limit: number;
+          p_purpose: Database["private"]["Enums"]["source_purpose"];
+          p_query: string;
+          p_resource: string;
+          p_workspace_id: string;
+        };
+        Returns: Json;
+      };
       security_settings_access: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
+      };
+      set_brand_assignment: {
+        Args: {
+          p_allowed: boolean;
+          p_brand_id: string;
+          p_expected_access_version: number;
+          p_request_id: string;
+          p_user_id: string;
+          p_workspace_id: string;
+        };
+        Returns: Json;
       };
       set_destination_grant: {
         Args: {
@@ -882,6 +1429,55 @@ export type Database = {
         };
         Returns: Json;
       };
+      share_source_original: {
+        Args: {
+          p_expected_access_version: number;
+          p_expected_content_version: number;
+          p_purposes: Database["private"]["Enums"]["source_purpose"][];
+          p_recipients: string[];
+          p_request_id: string;
+          p_share_confirmed: boolean;
+          p_source_id: string;
+          p_workspace_id: string;
+        };
+        Returns: Json;
+      };
+      source_custodian: {
+        Args: { p_source_id: string; p_workspace_id: string };
+        Returns: boolean;
+      };
+      source_visible: {
+        Args: {
+          p_purpose: Database["private"]["Enums"]["source_purpose"];
+          p_source_id: string;
+          p_version: number;
+          p_workspace_id: string;
+        };
+        Returns: boolean;
+      };
+      validate_capture_text: {
+        Args: {
+          p_allowed_data_confirmed: boolean;
+          p_body: string;
+          p_category: Database["private"]["Enums"]["source_category"];
+          p_client_authority: boolean;
+          p_expires_at: string;
+          p_purposes: Database["private"]["Enums"]["source_purpose"][];
+          p_title: string;
+        };
+        Returns: undefined;
+      };
+      validate_source_recipients: {
+        Args: {
+          p_purposes: Database["private"]["Enums"]["source_purpose"][];
+          p_recipients: string[];
+          p_source: Omit<
+            Database["private"]["Tables"]["sources"]["Row"],
+            Database["private"]["Tables"]["sources"]["ComputedFields"]
+          >;
+        };
+        Returns: undefined;
+      };
       workspace_accessible: {
         Args: { target_workspace_id: string };
         Returns: boolean;
@@ -889,6 +1485,19 @@ export type Database = {
       workspace_seat_capacity: {
         Args: { p_workspace_id: string };
         Returns: number;
+      };
+      write_brand: {
+        Args: {
+          p_audience: string;
+          p_brand_id: string;
+          p_expected_version: number;
+          p_guidance: string;
+          p_name: string;
+          p_request_id: string;
+          p_voice: string;
+          p_workspace_id: string;
+        };
+        Returns: Json;
       };
     };
     Enums: {
