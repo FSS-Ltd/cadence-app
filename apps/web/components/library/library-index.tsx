@@ -56,6 +56,7 @@ function LibraryContents() {
   const [detailError, setDetailError] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [creatingBrand, setCreatingBrand] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
   const searchKey = JSON.stringify([
     workspace.id,
     resource,
@@ -97,6 +98,12 @@ function LibraryContents() {
 
   function brandSaved(): void {
     setCreatingBrand(false);
+    setNotice("Brand saved. The library has been refreshed.");
+    setRefresh((current) => current + 1);
+  }
+
+  function sourceChanged(): void {
+    setNotice("Source access was updated. The library has been refreshed.");
     setRefresh((current) => current + 1);
   }
 
@@ -105,6 +112,7 @@ function LibraryContents() {
     selectionResource: Resource,
   ): Promise<void> {
     setSelectedFor(searchKey);
+    setNotice(null);
     setDetailError(false);
     setDetailLoading(true);
     setSelected(null);
@@ -213,6 +221,11 @@ function LibraryContents() {
           </label>
         )}
       </form>
+      {notice && (
+        <p className="capture-message is-success" role="status">
+          {notice}
+        </p>
+      )}
       {resource === "brands" && (
         <div className="library-brand-action">
           <button
@@ -239,6 +252,7 @@ function LibraryContents() {
           loading={currentDetailLoading}
           error={currentDetailError}
           onBrandSaved={brandSaved}
+          onSourceChanged={sourceChanged}
         />
       </div>
     </div>

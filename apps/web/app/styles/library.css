@@ -179,6 +179,71 @@
   white-space: pre-wrap;
   line-height: 1.6;
 }
+.source-actions {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-line);
+}
+.source-revision-editor {
+  display: grid;
+  justify-items: start;
+  margin-top: 1rem;
+}
+.source-actions h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+.source-actions .library-revision {
+  margin: 0;
+}
+.source-action-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.source-action-choices .button-secondary {
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.source-action-choices .button-secondary:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.source-action-form {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.85rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-paper);
+}
+.source-action-form fieldset {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.source-action-form :is(label, legend) {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.source-action-form :is(select, textarea) {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+.source-action-form textarea {
+  resize: vertical;
+}
+.source-action-form .button-primary {
+  justify-self: start;
+}
 @media (max-width: 850px) {
   .library-grid {
     grid-template-columns: minmax(0, 1fr);

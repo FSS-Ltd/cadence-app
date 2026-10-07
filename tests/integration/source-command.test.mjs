@@ -67,9 +67,9 @@ test("actual restricted driver preserves capture and excerpt isolation", async (
         order by workspace.id
         limit 2`,
     );
-    assert.deepEqual(workspaces, [
-      { id: workspace, name: "Synthetic source driver workspace" },
-    ]);
+    assert.equal(workspaces.length, 1);
+    assert.equal(workspaces[0].id, workspace);
+    assert.equal(workspaces[0].name, "Synthetic source driver workspace");
     const created = await withCommandTransaction(client, principal(1), (tx) =>
       executeSourceCommand(tx, workspace, capture),
     );

@@ -1,6 +1,8 @@
 import type { Brand } from "@cadence/contracts/brands";
 import type { ReviewedExcerpt, SourceDetail } from "@cadence/contracts/sources";
 import { BrandEditor } from "./brand-editor";
+import { SourceActions } from "./source-actions";
+import { SourceRevisionEditor } from "./source-revision-editor";
 
 export type LibrarySelection = SourceDetail | ReviewedExcerpt | Brand;
 
@@ -9,11 +11,13 @@ export function LibraryDetail({
   loading,
   error,
   onBrandSaved,
+  onSourceChanged,
 }: Readonly<{
   selected: LibrarySelection | null;
   loading: boolean;
   error: boolean;
   onBrandSaved: () => void;
+  onSourceChanged: () => void;
 }>) {
   return (
     <aside className="surface-panel library-detail" aria-label="Selected item">
@@ -50,6 +54,20 @@ export function LibraryDetail({
               ? "You control this source."
               : "Shared with you for this purpose."}
           </p>
+          {selected.isCustodian && (
+            <>
+              <SourceRevisionEditor
+                key={`revision:${selected.id}:${selected.contentVersion}:${selected.accessVersion}`}
+                source={selected}
+                onChanged={onSourceChanged}
+              />
+              <SourceActions
+                key={`access:${selected.id}:${selected.contentVersion}:${selected.accessVersion}`}
+                source={selected}
+                onChanged={onSourceChanged}
+              />
+            </>
+          )}
         </div>
       )}
       {selected && "kind" in selected && selected.kind === "excerpt" && (
