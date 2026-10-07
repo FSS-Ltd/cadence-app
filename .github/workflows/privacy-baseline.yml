@@ -79,7 +79,7 @@ jobs:
           bash scripts/test-data-api-boundary.sh
           bash scripts/test-transaction-context.sh
           bash scripts/test-access-concurrency.sh
-          node --experimental-strip-types --test tests/integration/command-database.test.mjs
+          node --experimental-strip-types --test --test-concurrency=1 tests/integration/*.test.mjs
       - name: Generate database types
         run: |
           npx --yes supabase@2.120.0 gen types --local --schema private,auth_api > "$RUNNER_TEMP/database.types.ts"

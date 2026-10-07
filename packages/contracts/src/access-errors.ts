@@ -5,6 +5,9 @@ export const accessErrorCodeSchema = z.enum([
   "AUTHENTICATION_TOO_OLD",
   "MFA_REQUIRED",
   "ACCESS_DENIED",
+  "SOURCE_ACCESS_DENIED",
+  "SOURCE_GRANT_REVOKED",
+  "ERASURE_PENDING",
   "INVALID_INPUT",
   "PAYLOAD_TOO_LARGE",
   "VERSION_CONFLICT",
@@ -47,7 +50,13 @@ export function publicAccessError(error: unknown): AccessErrorCode {
 export function accessErrorStatus(code: AccessErrorCode): number {
   if (code === "AUTH_REQUIRED") return 401;
   if (
-    ["AUTHENTICATION_TOO_OLD", "MFA_REQUIRED", "ACCESS_DENIED"].includes(code)
+    [
+      "AUTHENTICATION_TOO_OLD",
+      "MFA_REQUIRED",
+      "ACCESS_DENIED",
+      "SOURCE_ACCESS_DENIED",
+      "SOURCE_GRANT_REVOKED",
+    ].includes(code)
   )
     return 403;
   if (code === "INVALID_INPUT") return 400;
